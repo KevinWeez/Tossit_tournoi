@@ -195,11 +195,11 @@
                     <div class="player-card new">Yann</div>
                     <div class="player-card new">Latifa</div>
                     <div class="player-card new">Antoine</div>
-                    <div class="player-card experienced">Renaud</div>
+                    <div class="player-card experienced">Renaud </div>
                     <div class="player-card new">Bruno</div>
                     <div class="player-card new">Benoit</div>
                     <div class="player-card new">Youssef</div>
-                    <div class="player-card experienced">Ruan</div>
+                    <div class="player-card experienced">Ruan </div>
                     <div class="player-card new">Didrik</div>
                     <div class="player-card new">Philippe</div>
                     <div class="player-card new">Simon</div>
@@ -254,7 +254,7 @@
             </div>
 
             <div class="rules-section">
-                <h3>🎯 Système de Points Format A</h3>
+                <h3>🎯 Système de Points </h3>
                 <ul>
                     <li><strong>2 victoires consécutives = 1 point</strong></li>
                     <li><strong>Rotation forcée après 2 victoires</strong></li>
@@ -279,17 +279,19 @@
                 
                 <div class="match-input">
                     <select id="player1">
-                        <option value="">👤 Joueur 1</option>
-                        <option value="Daniel">Daniel (Exp.)</option>
+                        <option value="">👤 Joueur 1</option>            
+                        <option value="Kévin">Kévin</option>
+                        <option value="Daniel">Daniel</option>
                         <option value="Mélia">Mélia</option>
-                        <option value="Floran">Floran (Exp.)</option>
+                        <option value="Floran">Floran</option>
                         <option value="Yann">Yann</option>
                         <option value="Latifa">Latifa</option>
                         <option value="Antoine">Antoine</option>
-                        <option value="Renaud">Renaud (Exp.)</option>
+                        <option value="Renaud">Renaud</option>
                         <option value="Bruno">Bruno</option>
                         <option value="Benoit">Benoit</option>
                         <option value="Youssef">Youssef</option>
+                        <option value="Ruan">Ruan</option>
                         <option value="Didrik">Didrik</option>
                         <option value="Philippe">Philippe</option>
                         <option value="Simon">Simon</option>
@@ -298,17 +300,19 @@
                     <input type="number" id="score1" placeholder="Score" min="0" max="5">
                     
                     <select id="player2">
-                        <option value="">👤 Joueur 2</option>
-                        <option value="Daniel">Daniel (Exp.)</option>
+                        <option value="">Joueur 2</option>
+                        <option value="Kévin">Kévin</option>
+                        <option value="Daniel">Daniel</option>
                         <option value="Mélia">Mélia</option>
-                        <option value="Floran">Floran (Exp.)</option>
+                        <option value="Floran">Floran</option>
                         <option value="Yann">Yann</option>
                         <option value="Latifa">Latifa</option>
                         <option value="Antoine">Antoine</option>
-                        <option value="Renaud">Renaud (Exp.)</option>
+                        <option value="Renaud">Renaud</option>
                         <option value="Bruno">Bruno</option>
                         <option value="Benoit">Benoit</option>
                         <option value="Youssef">Youssef</option>
+                        <option value="Ruan">Ruan</option>
                         <option value="Didrik">Didrik</option>
                         <option value="Philippe">Philippe</option>
                         <option value="Simon">Simon</option>
@@ -366,6 +370,7 @@
     <script>
         // Variables globales - Format A Express (Kevin et Ruan = Arbitres)
         let players = {
+            'Kévin': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: true},
             'Daniel': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: true},
             'Mélia': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false},
             'Floran': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: true},
@@ -376,6 +381,7 @@
             'Bruno': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false},
             'Benoit': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false},
             'Youssef': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false},
+            'Ruan': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: true},
             'Didrik': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false},
             'Philippe': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false},
             'Simon': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false}
@@ -437,7 +443,7 @@
             
             // Si le gagnant est expérimenté, il doit gagner par 2 points d'écart minimum
             if (players[winner].experienced && difference < 2) {
-                alert(`⚠️ ${winner} (expérimenté) doit gagner par au moins 2 points d'écart !`);
+                alert(`⚠️ ${winner} doit gagner par au moins 2 points d'écart !`);
                 return;
             }
             
