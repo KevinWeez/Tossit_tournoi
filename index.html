@@ -79,8 +79,6 @@
             text-align: center;
             font-weight: bold;
         }
-        .experienced { border-left: 4px solid #ff6b6b; }
-        .new { border-left: 4px solid #4ecdc4; }
         .match-tracker {
             background: rgba(255,255,255,0.1);
             border-radius: 10px;
@@ -156,19 +154,39 @@
             margin: 0 0 10px 0;
             color: #ffd700;
         }
+        .data-management {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .export-import {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .warning {
+            background: rgba(255, 165, 0, 0.2);
+            border: 2px solid orange;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>🏆 Tournoi Tossit - King of the Hill</h1>
-            <p>Format expérimental - 15 participants - 6 pauses</p>
+            <p>Format simplifié - 15 participants - 6 pauses</p>
         </div>
 
         <div class="tab-buttons">
             <button class="tab-btn active" onclick="showTab('rules')">📋 Règles</button>
             <button class="tab-btn" onclick="showTab('formatA')">⚡ King of the Hill</button>
             <button class="tab-btn" onclick="showTab('tracker')">📊 Suivi Matches</button>
+            <button class="tab-btn" onclick="showTab('data')">💾 Données</button>
         </div>
 
         <!-- RÈGLES -->
@@ -179,7 +197,7 @@
                     <li><strong>Terrain :</strong> Table de ping-pong</li>
                     <li><strong>Cochonnet :</strong> Doit être tiré derrière le filet</li>
                     <li><strong>JackOver :</strong> Autorisé</li>
-                    <li><strong>Score :</strong> Premier à 7 points (point d'or à 6-6)</li>
+                    <li><strong>Score :</strong> Premier à 5 points (point d'or à 4-4)</li>
                     <li><strong>Nettoyage :</strong> Jeu de tossit nettoyé au démarrage</li>
                     <li><strong>Participation :</strong> Tout le monde doit jouer au minimum 1 fois</li>
                 </ul>
@@ -188,21 +206,21 @@
             <div class="rules-section">
                 <h3>👥 Participants</h3>
                 <div class="players-grid">
-                    <div class="player-card experienced">Kévin </div>
-                    <div class="player-card experienced">Daniel </div>
-                    <div class="player-card new">Mélia</div>
-                    <div class="player-card experienced">Floran </div>
-                    <div class="player-card new">Yann</div>
-                    <div class="player-card new">Latifa</div>
-                    <div class="player-card new">Antoine</div>
-                    <div class="player-card experienced">Renaud </div>
-                    <div class="player-card new">Bruno</div>
-                    <div class="player-card new">Benoit</div>
-                    <div class="player-card new">Youssef</div>
-                    <div class="player-card experienced">Ruan </div>
-                    <div class="player-card new">Didrik</div>
-                    <div class="player-card new">Philippe</div>
-                    <div class="player-card new">Simon</div>
+                    <div class="player-card">Kévin</div>
+                    <div class="player-card">Daniel</div>
+                    <div class="player-card">Mélia</div>
+                    <div class="player-card">Floran</div>
+                    <div class="player-card">Yann</div>
+                    <div class="player-card">Latifa</div>
+                    <div class="player-card">Antoine</div>
+                    <div class="player-card">Renaud</div>
+                    <div class="player-card">Bruno</div>
+                    <div class="player-card">Benoit</div>
+                    <div class="player-card">Youssef</div>
+                    <div class="player-card">Ruan</div>
+                    <div class="player-card">Didrik</div>
+                    <div class="player-card">Philippe</div>
+                    <div class="player-card">Simon</div>
                 </div>
             </div>
         </div>
@@ -214,8 +232,7 @@
                 <ul>
                     <li><strong>Matches à 5 points</strong> (au lieu de 7) = 5-8min max</li>
                     <li><strong>Rotation obligatoire :</strong> Toutes les 2 victoires OU après 10min</li>
-                    <li><strong>Handicap expérimentés :</strong> Doivent gagner par 2 points d'écart</li>
-                    <li><strong>Nouveaux :</strong> Gagnent normalement à 5 points</li>
+                    <li><strong>Tous égaux :</strong> Pas de handicap - tous gagnent à 5 points</li>
                     <li><strong>Objectif :</strong> 2 matches par pause = 12 matches totaux</li>
                 </ul>
             </div>
@@ -254,7 +271,7 @@
             </div>
 
             <div class="rules-section">
-                <h3>🎯 Système de Points </h3>
+                <h3>🎯 Système de Points</h3>
                 <ul>
                     <li><strong>2 victoires consécutives = 1 point</strong></li>
                     <li><strong>Rotation forcée après 2 victoires</strong></li>
@@ -271,7 +288,6 @@
                     <h4>🎯 Rappel des Règles :</h4>
                     <ul style="margin: 10px 0;">
                         <li><strong>Score à 5 points</strong> (Point d'or si 4-4)</li>
-                        <li><strong>Expérimentés (Daniel, Floran, Renaud) :</strong> Doivent gagner par 2 points d'écart</li>
                         <li><strong>Rotation forcée :</strong> Après 2 victoires consécutives OU 10 minutes</li>
                         <li><strong>Arbitres :</strong> Kévin / Ruan</li>
                     </ul>
@@ -365,49 +381,127 @@
                 <div id="matchHistory"></div>
             </div>
         </div>
+
+        <!-- GESTION DES DONNÉES -->
+        <div id="data" class="tab-content">
+            <div class="data-management">
+                <h3>💾 Gestion des Données</h3>
+                
+                <div class="warning">
+                    <h4>⚠️ Important</h4>
+                    <p>Les données sont stockées localement dans votre navigateur. Elles ne sont PAS partagées automatiquement entre différents appareils ou navigateurs.</p>
+                </div>
+
+                <div class="rules-section">
+                    <h4>📤 Exporter les données</h4>
+                    <p>Sauvegardez vos données du tournoi dans un fichier</p>
+                    <div class="export-import">
+                        <button onclick="exportData()">📥 Télécharger Sauvegarde</button>
+                        <button onclick="exportDataAsText()">📋 Copier comme Texte</button>
+                    </div>
+                </div>
+
+                <div class="rules-section">
+                    <h4>📥 Importer les données</h4>
+                    <p>Restaurer des données depuis un fichier de sauvegarde</p>
+                    <div class="export-import">
+                        <input type="file" id="importFile" accept=".json" onchange="importData(event)">
+                        <button onclick="document.getElementById('importFile').click()">📂 Charger Sauvegarde</button>
+                    </div>
+                </div>
+
+                <div class="rules-section">
+                    <h4>🔗 Partager les données</h4>
+                    <p>Pour partager avec d'autres personnes :</p>
+                    <ol>
+                        <li>Exportez vos données avec le bouton ci-dessus</li>
+                        <li>Envoyez le fichier .json aux autres participants</li>
+                        <li>Ils peuvent l'importer sur leur appareil</li>
+                    </ol>
+                </div>
+
+                <div class="rules-section">
+                    <h4>📊 Statistiques</h4>
+                    <div id="dataStats"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Variables globales - Format A Express (Kevin et Ruan = Arbitres)
+        // Variables globales - Format simplifié (plus de distinction expérimenté)
         let players = {
-            'Kévin': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: true},
-            'Daniel': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: true},
-            'Mélia': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false},
-            'Floran': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: true},
-            'Yann': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false},
-            'Latifa': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false},
-            'Antoine': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false},
-            'Renaud': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: true},
-            'Bruno': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false},
-            'Benoit': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false},
-            'Youssef': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false},
-            'Ruan': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: true},
-            'Didrik': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false},
-            'Philippe': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false},
-            'Simon': {matches: 0, wins: 0, points: 0, consecutive: 0, experienced: false}
+            'Kévin': {matches: 0, wins: 0, points: 0, consecutive: 0},
+            'Daniel': {matches: 0, wins: 0, points: 0, consecutive: 0},
+            'Mélia': {matches: 0, wins: 0, points: 0, consecutive: 0},
+            'Floran': {matches: 0, wins: 0, points: 0, consecutive: 0},
+            'Yann': {matches: 0, wins: 0, points: 0, consecutive: 0},
+            'Latifa': {matches: 0, wins: 0, points: 0, consecutive: 0},
+            'Antoine': {matches: 0, wins: 0, points: 0, consecutive: 0},
+            'Renaud': {matches: 0, wins: 0, points: 0, consecutive: 0},
+            'Bruno': {matches: 0, wins: 0, points: 0, consecutive: 0},
+            'Benoit': {matches: 0, wins: 0, points: 0, consecutive: 0},
+            'Youssef': {matches: 0, wins: 0, points: 0, consecutive: 0},
+            'Ruan': {matches: 0, wins: 0, points: 0, consecutive: 0},
+            'Didrik': {matches: 0, wins: 0, points: 0, consecutive: 0},
+            'Philippe': {matches: 0, wins: 0, points: 0, consecutive: 0},
+            'Simon': {matches: 0, wins: 0, points: 0, consecutive: 0}
         };
         
         let currentKing = '';
         let matchHistory = [];
 
+        // Chargement automatique des données sauvegardées
+        function loadSavedData() {
+            try {
+                const savedData = localStorage.getItem('tossitTournament');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    players = data.players || players;
+                    currentKing = data.currentKing || '';
+                    matchHistory = data.matchHistory || [];
+                    updateStandings();
+                    updateMatchHistory();
+                    updateCurrentKingDisplay();
+                    updateDataStats();
+                }
+            } catch (e) {
+                console.error('Erreur lors du chargement des données:', e);
+            }
+        }
+
+        // Sauvegarde automatique des données
+        function saveData() {
+            try {
+                const data = {
+                    players: players,
+                    currentKing: currentKing,
+                    matchHistory: matchHistory,
+                    lastUpdate: new Date().toISOString()
+                };
+                localStorage.setItem('tossitTournament', JSON.stringify(data));
+                updateDataStats();
+            } catch (e) {
+                console.error('Erreur lors de la sauvegarde:', e);
+            }
+        }
+
         function showTab(tabName) {
-            // Cacher tous les contenus
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
             
-            // Désactiver tous les boutons
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             
-            // Activer le contenu sélectionné
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
             
-            // Mettre à jour le tableau si on va sur tracker
             if (tabName === 'tracker') {
                 updateStandings();
+            } else if (tabName === 'data') {
+                updateDataStats();
             }
         }
 
@@ -430,28 +524,19 @@
             }
             
             if (Math.max(score1, score2) > 5) {
-                alert('⚠️ Score maximum : 5 points ');
+                alert('⚠️ Score maximum : 5 points');
                 return;
             }
             
-            // Vérification règle handicap pour expérimentés
+            if (matchHistory.length >= 12) {
+                alert('⚠️ Limite de 12 matches atteinte');
+                return;
+            }
+            
             const winner = score1 > score2 ? player1 : player2;
             const loser = score1 > score2 ? player2 : player1;
             const winnerScore = Math.max(score1, score2);
             const loserScore = Math.min(score1, score2);
-            const difference = winnerScore - loserScore;
-            
-            // Si le gagnant est expérimenté, il doit gagner par 2 points d'écart minimum
-            if (players[winner].experienced && difference < 2) {
-                alert(`⚠️ ${winner} doit gagner par au moins 2 points d'écart !`);
-                return;
-            }
-            
-            // Vérification limite 12 matches
-            if (matchHistory.length >= 12) {
-                alert('⚠️ Limite de 12 matches');
-                return;
-            }
             
             // Mettre à jour les stats
             players[winner].matches++;
@@ -484,6 +569,9 @@
                 forceRotation: forceRotation
             });
             
+            // Sauvegarder
+            saveData();
+            
             // Reset formulaire
             document.getElementById('player1').value = '';
             document.getElementById('score1').value = '';
@@ -500,7 +588,6 @@
             const tbody = document.getElementById('standingsBody');
             tbody.innerHTML = '';
             
-            // Trier les joueurs par points, puis par victoires
             const sortedPlayers = Object.entries(players).sort((a, b) => {
                 if (b[1].points !== a[1].points) return b[1].points - a[1].points;
                 return b[1].wins - a[1].wins;
@@ -515,7 +602,7 @@
                 
                 row.innerHTML = `
                     <td>${index + 1}</td>
-                    <td>${name}${stats.experienced ? ' (Exp.)' : ''}</td>
+                    <td>${name}</td>
                     <td>${stats.matches}</td>
                     <td>${stats.wins}</td>
                     <td>${stats.points}</td>
@@ -563,8 +650,35 @@
             
             if (matchHistory.length >= 12) {
                 kingDisplay.parentElement.style.background = 'rgba(255, 215, 0, 0.3)';
-                kingDisplay.parentElement.innerHTML += ' <strong style="color: #ffd700;">🏁 TOURNOI TERMINÉ</strong>';
+                if (!kingDisplay.parentElement.innerHTML.includes('TERMINÉ')) {
+                    kingDisplay.parentElement.innerHTML += ' <strong style="color: #ffd700;">🏁 TOURNOI TERMINÉ</strong>';
+                }
             }
+        }
+
+        function updateDataStats() {
+            const statsDiv = document.getElementById('dataStats');
+            if (!statsDiv) return;
+            
+            const totalMatches = matchHistory.length;
+            const totalPlayers = Object.keys(players).filter(p => players[p].matches > 0).length;
+            const savedData = localStorage.getItem('tossitTournament');
+            const dataSize = savedData ? (new Blob([savedData]).size / 1024).toFixed(2) : '0';
+            
+            statsDiv.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                        <div style="font-size: 2em; font-weight: bold; color: #ffd700;">${totalMatches}</div>
+                        <div>Matches joués</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                        <div style="font-size: 2em; font-weight: bold; color: #4ecdc4;">${totalPlayers}</div>
+                        <div>Joueurs actifs</div>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; opacity: 0.7;">Taille des données: ${dataSize} KB</p>
+                <p style="opacity: 0.7;">Dernière sauvegarde: ${savedData ? new Date(JSON.parse(savedData).lastUpdate).toLocaleString() : 'Jamais'}</p>
+            `;
         }
 
         function resetTournament() {
@@ -574,19 +688,105 @@
                         matches: 0, 
                         wins: 0, 
                         points: 0, 
-                        consecutive: 0, 
-                        experienced: players[player].experienced
+                        consecutive: 0
                     };
                 });
                 currentKing = '';
                 matchHistory = [];
+                saveData();
                 updateStandings();
                 updateMatchHistory();
+                updateCurrentKingDisplay();
+                updateDataStats();
             }
         }
 
-        // Initialisation
-        updateStandings();
+        // Fonctions de gestion des données
+        function exportData() {
+            const data = {
+                players: players,
+                currentKing: currentKing,
+                matchHistory: matchHistory,
+                exportDate: new Date().toISOString(),
+                version: "1.0"
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `tossit_tournoi_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function exportDataAsText() {
+            const data = {
+                players: players,
+                currentKing: currentKing,
+                matchHistory: matchHistory,
+                exportDate: new Date().toISOString()
+            };
+            
+            const textData = JSON.stringify(data, null, 2);
+            navigator.clipboard.writeText(textData).then(() => {
+                alert('📋 Données copiées dans le presse-papiers !');
+            }).catch(() => {
+                // Fallback si clipboard API ne fonctionne pas
+                const textArea = document.createElement('textarea');
+                textArea.value = textData;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('📋 Données copiées dans le presse-papiers !');
+            });
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    // Validation basique
+                    if (!data.players || !data.matchHistory) {
+                        throw new Error('Format de fichier invalide');
+                    }
+                    
+                    if (confirm('⚠️ Cela va remplacer toutes les données actuelles. Continuer ?')) {
+                        players = data.players;
+                        currentKing = data.currentKing || '';
+                        matchHistory = data.matchHistory;
+                        
+                        saveData();
+                        updateStandings();
+                        updateMatchHistory();
+                        updateCurrentKingDisplay();
+                        updateDataStats();
+                        
+                        alert('✅ Données importées avec succès !');
+                    }
+                } catch (error) {
+                    alert('❌ Erreur lors de l\'import: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset input
+            event.target.value = '';
+        }
+
+        // Initialisation au chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedData();
+            updateStandings();
+            updateCurrentKingDisplay();
+        });
     </script>
 </body>
-</html>
