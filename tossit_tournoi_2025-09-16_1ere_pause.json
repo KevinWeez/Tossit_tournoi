@@ -1,0 +1,117 @@
+{
+  "players": {
+    "Kévin": {
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Daniel": {
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Mélia": {
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Floran": {
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Yann": {
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Latifa": {
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Antoine": {
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Renaud": {
+      "matches": 1,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Bruno": {
+      "matches": 1,
+      "wins": 1,
+      "points": 0,
+      "consecutive": 1
+    },
+    "Benoit": {
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Youssef": {
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Ruan": {
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Didrik": {
+      "matches": 1,
+      "wins": 1,
+      "points": 0,
+      "consecutive": 1
+    },
+    "Philippe": {
+      "matches": 1,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Simon": {
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    }
+  },
+  "currentKing": "Didrik",
+  "matchHistory": [
+    {
+      "winner": "Bruno",
+      "loser": "Renaud",
+      "score": "5-2",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "14:05:03",
+      "forceRotation": false
+    },
+    {
+      "winner": "Didrik",
+      "loser": "Philippe",
+      "score": "5-2",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "14:05:14",
+      "forceRotation": false
+    }
+  ],
+  "exportDate": "2025-09-16T12:06:20.333Z",
+  "version": "1.0"
+}
