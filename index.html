@@ -266,9 +266,9 @@
         <!-- SUIVI MATCHES -->
         <div id="tracker" class="tab-content">
             <div class="match-tracker">
-                <h3>📊 Saisie des Matches - Format A Express</h3>
+                <h3>📊 Saisie des Matches</h3>
                 <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                    <h4>🎯 Rappel des Règles Format A :</h4>
+                    <h4>🎯 Rappel des Règles :</h4>
                     <ul style="margin: 10px 0;">
                         <li><strong>Score à 5 points</strong> (Point d'or si 4-4)</li>
                         <li><strong>Expérimentés (Daniel, Floran, Renaud) :</strong> Doivent gagner par 2 points d'écart</li>
@@ -424,7 +424,7 @@
             }
             
             if (Math.max(score1, score2) > 5) {
-                alert('⚠️ Score maximum : 5 points (Format A Express)');
+                alert('⚠️ Score maximum : 5 points ');
                 return;
             }
             
@@ -443,7 +443,7 @@
             
             // Vérification limite 12 matches
             if (matchHistory.length >= 12) {
-                alert('⚠️ Limite de 12 matches atteinte pour le Format A Express');
+                alert('⚠️ Limite de 12 matches');
                 return;
             }
             
