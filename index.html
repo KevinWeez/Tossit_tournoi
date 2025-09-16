@@ -194,6 +194,7 @@
             <div class="rules-section">
                 <h3>📜 Règles Générales du Tossit</h3>
                 <ul>
+                    <li><strong>Démarrage :</strong> Pierre Feuille Ciseaux en 1 le gagnant lance le cochonet</li>
                     <li><strong>Terrain :</strong> Table de ping-pong</li>
                     <li><strong>Cochonnet :</strong> Doit être tiré derrière le filet</li>
                     <li><strong>JackOver :</strong> Autorisé</li>
@@ -288,7 +289,7 @@
                     <h4>🎯 Rappel des Règles :</h4>
                     <ul style="margin: 10px 0;">
                         <li><strong>Score à 5 points</strong> (Point d'or si 4-4)</li>
-                        <li><strong>Rotation forcée :</strong> Après 2 victoires consécutives OU 10 minutes</li>
+                        <li><strong>Rotation forcée :</strong> Après 2 victoires consécutives</li>
                         <li><strong>Arbitres :</strong> Kévin / Ruan</li>
                     </ul>
                 </div>
@@ -431,25 +432,119 @@
     <script>
         // Variables globales - Format simplifié (plus de distinction expérimenté)
         let players = {
-            'Kévin': {matches: 0, wins: 0, points: 0, consecutive: 0},
-            'Daniel': {matches: 0, wins: 0, points: 0, consecutive: 0},
-            'Mélia': {matches: 0, wins: 0, points: 0, consecutive: 0},
-            'Floran': {matches: 0, wins: 0, points: 0, consecutive: 0},
-            'Yann': {matches: 0, wins: 0, points: 0, consecutive: 0},
-            'Latifa': {matches: 0, wins: 0, points: 0, consecutive: 0},
-            'Antoine': {matches: 0, wins: 0, points: 0, consecutive: 0},
-            'Renaud': {matches: 0, wins: 0, points: 0, consecutive: 0},
-            'Bruno': {matches: 0, wins: 0, points: 0, consecutive: 0},
-            'Benoit': {matches: 0, wins: 0, points: 0, consecutive: 0},
-            'Youssef': {matches: 0, wins: 0, points: 0, consecutive: 0},
-            'Ruan': {matches: 0, wins: 0, points: 0, consecutive: 0},
-            'Didrik': {matches: 0, wins: 0, points: 0, consecutive: 0},
-            'Philippe': {matches: 0, wins: 0, points: 0, consecutive: 0},
-            'Simon': {matches: 0, wins: 0, points: 0, consecutive: 0}
+            "Kévin": {
+              "matches": 0,
+              "wins": 0,
+              "points": 0,
+              "consecutive": 0
+            },
+            "Daniel": {
+              "matches": 0,
+              "wins": 0,
+              "points": 0,
+              "consecutive": 0
+            },
+            "Mélia": {
+              "matches": 0,
+              "wins": 0,
+              "points": 0,
+              "consecutive": 0
+            },
+            "Floran": {
+              "matches": 0,
+              "wins": 0,
+              "points": 0,
+              "consecutive": 0
+            },
+            "Yann": {
+              "matches": 0,
+              "wins": 0,
+              "points": 0,
+              "consecutive": 0
+            },
+            "Latifa": {
+              "matches": 0,
+              "wins": 0,
+              "points": 0,
+              "consecutive": 0
+            },
+            "Antoine": {
+              "matches": 0,
+              "wins": 0,
+              "points": 0,
+              "consecutive": 0
+            },
+            "Renaud": {
+              "matches": 1,
+              "wins": 0,
+              "points": 0,
+              "consecutive": 0
+            },
+            "Bruno": {
+              "matches": 1,
+              "wins": 1,
+              "points": 0,
+              "consecutive": 1
+            },
+            "Benoit": {
+              "matches": 0,
+              "wins": 0,
+              "points": 0,
+              "consecutive": 0
+            },
+            "Youssef": {
+              "matches": 0,
+              "wins": 0,
+              "points": 0,
+              "consecutive": 0
+            },
+            "Ruan": {
+              "matches": 0,
+              "wins": 0,
+              "points": 0,
+              "consecutive": 0
+            },
+            "Didrik": {
+              "matches": 1,
+              "wins": 1,
+              "points": 0,
+              "consecutive": 1
+            },
+            "Philippe": {
+              "matches": 1,
+              "wins": 0,
+              "points": 0,
+              "consecutive": 0
+            },
+            "Simon": {
+              "matches": 0,
+              "wins": 0,
+              "points": 0,
+              "consecutive": 0
+            }
         };
         
-        let currentKing = '';
-        let matchHistory = [];
+        let currentKing = 'Didrik';
+        let matchHistory = [    
+            {
+              "winner": "Bruno",
+              "loser": "Renaud",
+              "score": "5-2",
+              "pause": "1",
+              "duration": "N/A",
+              "timestamp": "14:05:03",
+              "forceRotation": false
+            },
+            {
+              "winner": "Didrik",
+              "loser": "Philippe",
+              "score": "5-2",
+              "pause": "1",
+              "duration": "N/A",
+              "timestamp": "14:05:14",
+              "forceRotation": false
+            }
+        ];
 
         // Chargement automatique des données sauvegardées
         function loadSavedData() {
