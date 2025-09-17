@@ -355,7 +355,7 @@
                 
                 <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px;">
                     <strong>👑 Roi actuel :</strong> <span id="currentKingDisplay">Aucun</span> 
-                    <span style="margin-left: 20px;"><strong>🎯 Matches joués :</strong> <span id="totalMatches">0</span>/12</span>
+                    <span style="margin-left: 20px;"><strong>🎯 Matches joués :</strong> <span id="totalMatches">0</span>/99</span>
                 </div>
             </div>
 
@@ -573,10 +573,6 @@
                     players = data.players || players;
                     currentKing = data.currentKing || '';
                     matchHistory = data.matchHistory || [];
-                    updateStandings();
-                    updateMatchHistory();
-                    updateCurrentKingDisplay();
-                    updateDataStats();
                 }
             } catch (e) {
                 console.error('Erreur lors du chargement des données:', e);
@@ -611,8 +607,11 @@
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
             
+            // CORRECTION CRITIQUE : Ajouter updateMatchHistory() ici
             if (tabName === 'tracker') {
                 updateStandings();
+                updateMatchHistory(); // Cette ligne était manquante dans ton code
+                updateCurrentKingDisplay();
             } else if (tabName === 'data') {
                 updateDataStats();
             }
@@ -727,7 +726,14 @@
 
         function updateMatchHistory() {
             const historyDiv = document.getElementById('matchHistory');
+            if (!historyDiv) return; // Sécurité au cas où l'élément n'existe pas
+            
             historyDiv.innerHTML = '';
+            
+            if (matchHistory.length === 0) {
+                historyDiv.innerHTML = '<p style="opacity: 0.7; text-align: center; padding: 20px;">Aucun match joué pour le moment</p>';
+                return;
+            }
             
             matchHistory.slice(-10).reverse().forEach((match, index) => {
                 const matchDiv = document.createElement('div');
@@ -757,6 +763,8 @@
         function updateCurrentKingDisplay() {
             const kingDisplay = document.getElementById('currentKingDisplay');
             const totalMatchesDisplay = document.getElementById('totalMatches');
+            
+            if (!kingDisplay || !totalMatchesDisplay) return;
             
             kingDisplay.textContent = currentKing || 'Aucun';
             totalMatchesDisplay.textContent = matchHistory.length;
@@ -895,11 +903,16 @@
             event.target.value = '';
         }
 
-        // Initialisation au chargement de la page
+        // CORRECTION CRITIQUE : Initialisation complète au chargement de la page
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initialisation du tournoi...');
             loadSavedData();
             updateStandings();
+            updateMatchHistory(); // Cette ligne était manquante dans ton code original
             updateCurrentKingDisplay();
+            updateDataStats();
+            console.log('Matches chargés:', matchHistory.length);
         });
     </script>
 </body>
+</html>
