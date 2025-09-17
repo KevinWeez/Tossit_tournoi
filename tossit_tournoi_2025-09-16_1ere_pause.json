@@ -31,10 +31,10 @@
       "consecutive": 0
     },
     "Latifa": {
-      "matches": 0,
-      "wins": 0,
+      "matches": 1,
+      "wins": 1,
       "points": 0,
-      "consecutive": 0
+      "consecutive": 1
     },
     "Antoine": {
       "matches": 0,
@@ -73,10 +73,10 @@
       "consecutive": 1
     },
     "Didrik": {
-      "matches": 1,
+      "matches": 2,
       "wins": 1,
       "points": 0,
-      "consecutive": 1
+      "consecutive": 0
     },
     "Philippe": {
       "matches": 1,
@@ -91,7 +91,7 @@
       "consecutive": 0
     }
   },
-  "currentKing": "Ruan",
+  "currentKing": "Latifa",
   "matchHistory": [
     {
       "winner": "Bruno",
@@ -128,7 +128,16 @@
       "duration": "N/A",
       "timestamp": "18:04:46",
       "forceRotation": false
+    },
+    {
+      "winner": "Latifa",
+      "loser": "Didrik",
+      "score": "5-2",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "10:54:18",
+      "forceRotation": false
     }
   ],
-  "exportDate": "2025-09-17T07:09:28.893Z"
+  "exportDate": "2025-09-17T08:55:22.906Z"
 }
