@@ -433,10 +433,10 @@
         // Variables globales - Format simplifié (plus de distinction expérimenté)
         let players = {
             "Kévin": {
-              "matches": 0,
-              "wins": 0,
+              "matches": 1,
+              "wins": 1,
               "points": 0,
-              "consecutive": 0
+              "consecutive": 1
             },
             "Daniel": {
               "matches": 0,
@@ -457,7 +457,7 @@
               "consecutive": 0
             },
             "Yann": {
-              "matches": 0,
+              "matches": 1,
               "wins": 0,
               "points": 0,
               "consecutive": 0
@@ -481,10 +481,10 @@
               "consecutive": 0
             },
             "Bruno": {
-              "matches": 1,
+              "matches": 2,
               "wins": 1,
               "points": 0,
-              "consecutive": 1
+              "consecutive": 0
             },
             "Benoit": {
               "matches": 0,
@@ -499,10 +499,10 @@
               "consecutive": 0
             },
             "Ruan": {
-              "matches": 0,
-              "wins": 0,
+              "matches": 1,
+              "wins": 1,
               "points": 0,
-              "consecutive": 0
+              "consecutive": 1
             },
             "Didrik": {
               "matches": 1,
@@ -524,26 +524,44 @@
             }
         };
         
-        let currentKing = 'Didrik';
-        let matchHistory = [    
-            {
-              "winner": "Bruno",
-              "loser": "Renaud",
-              "score": "5-2",
-              "pause": "1",
-              "duration": "N/A",
-              "timestamp": "14:05:03",
-              "forceRotation": false
-            },
-            {
-              "winner": "Didrik",
-              "loser": "Philippe",
-              "score": "5-2",
-              "pause": "1",
-              "duration": "N/A",
-              "timestamp": "14:05:14",
-              "forceRotation": false
-            }
+        let currentKing = 'Ruan';
+        let matchHistory = [
+                {
+                  "winner": "Bruno",
+                  "loser": "Renaud",
+                  "score": "5-2",
+                  "pause": "1",
+                  "duration": "N/A",
+                  "timestamp": "14:05:03",
+                  "forceRotation": false
+                },
+                {
+                  "winner": "Didrik",
+                  "loser": "Philippe",
+                  "score": "5-2",
+                  "pause": "1",
+                  "duration": "N/A",
+                  "timestamp": "14:05:14",
+                  "forceRotation": false
+                },
+                {
+                  "winner": "Kévin",
+                  "loser": "Yann",
+                  "score": "5-1",
+                  "pause": "1",
+                  "duration": "N/A",
+                  "timestamp": "17:00:05",
+                  "forceRotation": false
+                },
+                {
+                  "winner": "Ruan",
+                  "loser": "Bruno",
+                  "score": "5-0",
+                  "pause": "2",
+                  "duration": "N/A",
+                  "timestamp": "18:04:46",
+                  "forceRotation": false
+                }
         ];
 
         // Chargement automatique des données sauvegardées
