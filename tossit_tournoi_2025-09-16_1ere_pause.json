@@ -55,10 +55,10 @@
       "consecutive": 0
     },
     "Benoit": {
-      "matches": 1,
-      "wins": 1,
-      "points": 0,
-      "consecutive": 1
+      "matches": 2,
+      "wins": 2,
+      "points": 1,
+      "consecutive": 0
     },
     "Youssef": {
       "matches": 0,
@@ -73,7 +73,7 @@
       "consecutive": 0
     },
     "Didrik": {
-      "matches": 2,
+      "matches": 3,
       "wins": 1,
       "points": 0,
       "consecutive": 0
@@ -182,7 +182,16 @@
       "duration": "N/A",
       "timestamp": "16:12:21",
       "forceRotation": true
+    },
+    {
+      "winner": "Benoit",
+      "loser": "Didrik",
+      "score": "5-0",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "16:50:33",
+      "forceRotation": true
     }
   ],
-  "exportDate": "2025-09-17T14:18:20.933Z"
+  "exportDate": "2025-09-17T14:52:27.891Z"
 }
