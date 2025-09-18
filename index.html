@@ -902,8 +902,8 @@
                 }
                 
                 row.innerHTML = `
-                    <td>${currentRank}${isTied}</td>
-                    <td>${name}${isTied}</td>
+                    <td>${currentRank}</td>
+                    <td>${name}</td>
                     <td>${stats.matches}</td>
                     <td>${stats.wins}</td>
                     <td>${stats.points}</td>
@@ -1170,7 +1170,7 @@
                     playerCard.className = cardClass;
                     
                     const rankDisplay = isTied ? 
-                        `${rankDisplays[Math.min(currentRank - 1, 9)]} Ex-æquo` : 
+                        `${rankDisplays[Math.min(currentRank - 1, 9)]} ` : 
                         rankDisplays[Math.min(currentRank - 1, 9)];
                     
                     playerCard.innerHTML = `
