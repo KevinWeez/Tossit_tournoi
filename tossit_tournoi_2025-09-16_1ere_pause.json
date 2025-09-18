@@ -7,10 +7,10 @@
       "consecutive": 1
     },
     "Daniel": {
-      "matches": 0,
-      "wins": 0,
+      "matches": 1,
+      "wins": 1,
       "points": 0,
-      "consecutive": 0
+      "consecutive": 1
     },
     "Mélia": {
       "matches": 0,
@@ -43,13 +43,13 @@
       "consecutive": 0
     },
     "Renaud": {
-      "matches": 3,
-      "wins": 0,
+      "matches": 4,
+      "wins": 1,
       "points": 0,
-      "consecutive": 0
+      "consecutive": 1
     },
     "Bruno": {
-      "matches": 2,
+      "matches": 3,
       "wins": 1,
       "points": 0,
       "consecutive": 0
@@ -67,16 +67,16 @@
       "consecutive": 0
     },
     "Ruan": {
-      "matches": 3,
+      "matches": 4,
       "wins": 2,
       "points": 1,
       "consecutive": 0
     },
     "Didrik": {
-      "matches": 4,
+      "matches": 6,
       "wins": 2,
       "points": 0,
-      "consecutive": 1
+      "consecutive": 0
     },
     "Philippe": {
       "matches": 7,
@@ -85,9 +85,9 @@
       "consecutive": 0
     },
     "Simon": {
-      "matches": 1,
-      "wins": 0,
-      "points": 0,
+      "matches": 3,
+      "wins": 2,
+      "points": 1,
       "consecutive": 0
     }
   },
@@ -254,7 +254,43 @@
       "duration": "N/A",
       "timestamp": "09:43:10",
       "forceRotation": true
+    },
+    {
+      "winner": "Daniel",
+      "loser": "Didrik",
+      "score": "5-3",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "09:49:07",
+      "forceRotation": false
+    },
+    {
+      "winner": "Renaud",
+      "loser": "Didrik",
+      "score": "5-0",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "09:52:00",
+      "forceRotation": false
+    },
+    {
+      "winner": "Simon",
+      "loser": "Ruan",
+      "score": "6-2",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "11:25:58",
+      "forceRotation": false
+    },
+    {
+      "winner": "Simon",
+      "loser": "Bruno",
+      "score": "5-1",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "11:26:17",
+      "forceRotation": true
     }
   ],
-  "exportDate": "2025-09-18T07:43:20.528Z"
+  "exportDate": "2025-09-18T09:26:27.360Z"
 }
