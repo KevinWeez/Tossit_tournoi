@@ -1,16 +1,16 @@
 {
   "players": {
     "Kévin": {
-      "matches": 4,
-      "wins": 4,
+      "matches": 6,
+      "wins": 5,
       "points": 2,
       "consecutive": 0
     },
     "Daniel": {
-      "matches": 1,
+      "matches": 3,
       "wins": 1,
       "points": 0,
-      "consecutive": 1
+      "consecutive": 0
     },
     "Mélia": {
       "matches": 0,
@@ -43,10 +43,10 @@
       "consecutive": 0
     },
     "Renaud": {
-      "matches": 5,
-      "wins": 1,
+      "matches": 7,
+      "wins": 2,
       "points": 0,
-      "consecutive": 0
+      "consecutive": 1
     },
     "Bruno": {
       "matches": 4,
@@ -73,9 +73,9 @@
       "consecutive": 0
     },
     "Didrik": {
-      "matches": 8,
-      "wins": 3,
-      "points": 0,
+      "matches": 10,
+      "wins": 5,
+      "points": 1,
       "consecutive": 1
     },
     "Philippe": {
@@ -91,7 +91,7 @@
       "consecutive": 0
     }
   },
-  "currentKing": "",
+  "currentKing": "Didrik",
   "matchHistory": [
     {
       "winner": "Bruno",
@@ -335,7 +335,43 @@
       "duration": "N/A",
       "timestamp": "11:43:24",
       "forceRotation": true
+    },
+    {
+      "winner": "Kévin",
+      "loser": "Daniel",
+      "score": "5-0",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "14:04:38",
+      "forceRotation": false
+    },
+    {
+      "winner": "Didrik",
+      "loser": "Renaud",
+      "score": "5-1",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "14:04:52",
+      "forceRotation": true
+    },
+    {
+      "winner": "Renaud",
+      "loser": "Daniel",
+      "score": "5-0",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "14:05:03",
+      "forceRotation": false
+    },
+    {
+      "winner": "Didrik",
+      "loser": "Kévin",
+      "score": "5-1",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "14:05:15",
+      "forceRotation": false
     }
   ],
-  "exportDate": "2025-09-18T09:43:40.047Z"
+  "exportDate": "2025-09-18T12:06:23.833Z"
 }
