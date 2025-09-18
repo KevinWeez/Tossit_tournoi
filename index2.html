@@ -1242,3 +1242,1174 @@
     </script>
 </body>
 </html>
+<!--EXISTING CODE-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournoi Tossit - King Of The Hill</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .tab-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        .tab-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: rgba(255,255,255,0.4);
+            transform: scale(1.05);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .rules-section {
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .rules-section h3 {
+            color: #ffd700;
+            margin-top: 0;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 10px;
+        }
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .player-card {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .match-tracker {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .match-input {
+            display: grid;
+            grid-template-columns: 1fr 50px 1fr 100px;
+            gap: 15px;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+        select, input {
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .standings {
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .standings table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .standings th, .standings td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+        .standings th {
+            background: rgba(255,255,255,0.2);
+            color: #ffd700;
+        }
+        .king {
+            background: rgba(255, 215, 0, 0.3) !important;
+            font-weight: bold;
+        }
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .pause-slot {
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        .pause-slot h4 {
+            margin: 0 0 10px 0;
+            color: #ffd700;
+        }
+        .data-management {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .export-import {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .warning {
+            background: rgba(255, 165, 0, 0.2);
+            border: 2px solid orange;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .podium-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .podium-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+        }
+        .podium-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .podium-display {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .podium-place {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+        }
+        .podium-place:hover {
+            transform: scale(1.02);
+        }
+        .podium-place.first {
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            color: #333;
+        }
+        .podium-place.second {
+            background: linear-gradient(90deg, #C0C0C0, #A9A9A9);
+            color: #333;
+        }
+        .podium-place.third {
+            background: linear-gradient(90deg, #CD7F32, #B8860B);
+            color: #333;
+        }
+        .podium-rank {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-right: 20px;
+            min-width: 60px;
+            text-align: center;
+        }
+        .podium-info {
+            flex: 1;
+        }
+        .podium-name {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .podium-points {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .podium-stats {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        .podium-crown {
+            font-size: 1.5em;
+            margin-left: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏆 Tournoi Tossit - King of the Hill</h1>
+            <p>Format simplifié - 15 participants - 6 pauses</p>
+        </div>
+
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="showTab('rules')">📋 Règles</button>
+            <button class="tab-btn" onclick="showTab('formatA')">⚡ King of the Hill</button>
+            <button class="tab-btn" onclick="showTab('tracker')">📊 Suivi Matches</button>
+            <button class="tab-btn" onclick="showTab('data')">💾 Données</button>
+        </div>
+
+        <!-- RÈGLES -->
+        <div id="rules" class="tab-content active">
+            <div class="rules-section">
+                <h3>📜 Règles Générales du Tossit</h3>
+                <ul>
+                    <li><strong>Démarrage :</strong> Pierre Feuille Ciseaux en 1 le gagnant lance le cochonet</li>
+                    <li><strong>Terrain :</strong> Table de ping-pong</li>
+                    <li><strong>Cochonnet :</strong> Doit être tiré derrière le filet</li>
+                    <li><strong>JackOver :</strong> Autorisé</li>
+                    <li><strong>Score :</strong> Premier à 5 points (point d'or à 4-4)</li>
+                    <li><strong>Nettoyage :</strong> Jeu de tossit nettoyé au démarrage</li>
+                    <li><strong>Participation :</strong> Tout le monde doit jouer au minimum 1 fois</li>
+                </ul>
+            </div>
+
+            <div class="rules-section">
+                <h3>👥 Participants</h3>
+                <div class="players-grid">
+                    <div class="player-card">Kévin</div>
+                    <div class="player-card">Daniel</div>
+                    <div class="player-card">Mélia</div>
+                    <div class="player-card">Floran</div>
+                    <div class="player-card">Yann</div>
+                    <div class="player-card">Latifa</div>
+                    <div class="player-card">Antoine</div>
+                    <div class="player-card">Renaud</div>
+                    <div class="player-card">Bruno</div>
+                    <div class="player-card">Benoit</div>
+                    <div class="player-card">Youssef</div>
+                    <div class="player-card">Ruan</div>
+                    <div class="player-card">Didrik</div>
+                    <div class="player-card">Philippe</div>
+                    <div class="player-card">Simon</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORMAT A -->
+        <div id="formatA" class="tab-content">
+            <div class="rules-section">
+                <h3>⚡ Format King of the Hill</h3>
+                <ul>
+                    <li><strong>Matches à 5 points</strong> (au lieu de 7) = 5-8min max</li>
+                    <li><strong>Rotation obligatoire :</strong> Toutes les 2 victoires OU après 10min</li>
+                    <li><strong>Tous égaux :</strong> Pas de handicap - tous gagnent à 5 points</li>
+                    <li><strong>Objectif :</strong> 2 matches par pause = 12 matches totaux</li>
+                </ul>
+            </div>
+
+            <div class="schedule-grid">
+                <div class="pause-slot">
+                    <h4>Pause 1</h4>
+                    <p>15-30min</p>
+                    <p>2 matches prévus</p>
+                </div>
+                <div class="pause-slot">
+                    <h4>Pause 2</h4>
+                    <p>15-30min</p>
+                    <p>2 matches prévus</p>
+                </div>
+                <div class="pause-slot">
+                    <h4>Pause 3</h4>
+                    <p>15-30min</p>
+                    <p>2 matches prévus</p>
+                </div>
+                <div class="pause-slot">
+                    <h4>Pause 4</h4>
+                    <p>15-30min</p>
+                    <p>2 matches prévus</p>
+                </div>
+                <div class="pause-slot">
+                    <h4>Pause 5</h4>
+                    <p>15-30min</p>
+                    <p>2 matches prévus</p>
+                </div>
+                <div class="pause-slot">
+                    <h4>Pause 6</h4>
+                    <p>15-30min</p>
+                    <p>2 matches prévus</p>
+                </div>
+            </div>
+
+            <div class="rules-section">
+                <h3>🎯 Système de Points</h3>
+                <ul>
+                    <li><strong>2 victoires consécutives = 1 point</strong></li>
+                    <li><strong>Rotation forcée après 2 victoires</strong></li>
+                    <li><strong>Le joueur avec le plus de points gagne</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SUIVI MATCHES -->
+        <div id="tracker" class="tab-content">
+            <div class="match-tracker">
+                <h3>📊 Saisie des Matches</h3>
+                <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <h4>🎯 Rappel des Règles :</h4>
+                    <ul style="margin: 10px 0;">
+                        <li><strong>Score à 5 points</strong> (Point d'or si 4-4)</li>
+                        <li><strong>Rotation forcée :</strong> Après 2 victoires consécutives</li>
+                        <li><strong>Arbitres :</strong> Kévin / Ruan</li>
+                    </ul>
+                </div>
+                
+                <div class="match-input">
+                    <select id="player1">
+                        <option value="">👤 Joueur 1</option>            
+                        <option value="Kévin">Kévin</option>
+                        <option value="Daniel">Daniel</option>
+                        <option value="Mélia">Mélia</option>
+                        <option value="Floran">Floran</option>
+                        <option value="Yann">Yann</option>
+                        <option value="Latifa">Latifa</option>
+                        <option value="Antoine">Antoine</option>
+                        <option value="Renaud">Renaud</option>
+                        <option value="Bruno">Bruno</option>
+                        <option value="Benoit">Benoit</option>
+                        <option value="Youssef">Youssef</option>
+                        <option value="Ruan">Ruan</option>
+                        <option value="Didrik">Didrik</option>
+                        <option value="Philippe">Philippe</option>
+                        <option value="Simon">Simon</option>
+                    </select>
+                    
+                    <input type="number" id="score1" placeholder="Score" min="0" max="5">
+                    
+                    <select id="player2">
+                        <option value="">Joueur 2</option>
+                        <option value="Kévin">Kévin</option>
+                        <option value="Daniel">Daniel</option>
+                        <option value="Mélia">Mélia</option>
+                        <option value="Floran">Floran</option>
+                        <option value="Yann">Yann</option>
+                        <option value="Latifa">Latifa</option>
+                        <option value="Antoine">Antoine</option>
+                        <option value="Renaud">Renaud</option>
+                        <option value="Bruno">Bruno</option>
+                        <option value="Benoit">Benoit</option>
+                        <option value="Youssef">Youssef</option>
+                        <option value="Ruan">Ruan</option>
+                        <option value="Didrik">Didrik</option>
+                        <option value="Philippe">Philippe</option>
+                        <option value="Simon">Simon</option>
+                    </select>
+                    
+                    <input type="number" id="score2" placeholder="Score" min="0" max="5">
+                </div>
+                
+                <div style="display: flex; gap: 10px; align-items: center; margin: 15px 0;">
+                    <button onclick="addMatch()">➕ Ajouter Match</button>
+                    <button onclick="resetTournament()" style="background: #f44336;">🔄 Reset Tournoi</button>
+                    <button onclick="showPodium()" style="background: #FF8C00;">🏆 Afficher Top 5</button>
+                    <select id="pauseNumber" style="margin-left: 20px;">
+                        <option value="1">Pause 1</option>
+                        <option value="2">Pause 2</option>
+                        <option value="3">Pause 3</option>
+                        <option value="4">Pause 4</option>
+                        <option value="5">Pause 5</option>
+                        <option value="6">Pause 6</option>
+                    </select>
+                    <span>⏱️ Durée match : </span>
+                    <input type="number" id="matchDuration" placeholder="min" min="1" max="15" style="width: 60px;">
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px;">
+                    <strong>👑 Roi actuel :</strong> <span id="currentKingDisplay">Aucun</span> 
+                    <span style="margin-left: 20px;"><strong>🎯 Matches joués :</strong> <span id="totalMatches">0</span>/99</span>
+                </div>
+            </div>
+
+            <div class="standings">
+                <h3>🏆 Classement King of the Hill</h3>
+                <table id="standingsTable">
+                    <thead>
+                        <tr>
+                            <th>Rang</th>
+                            <th>Joueur</th>
+                            <th>Matches</th>
+                            <th>Victoires</th>
+                            <th>Points KotH</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody id="standingsBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="standings">
+                <h3>📋 Historique des Matches</h3>
+                <div id="matchHistory"></div>
+            </div>
+        </div>
+
+        <!-- GESTION DES DONNÉES -->
+        <div id="data" class="tab-content">
+            <div class="data-management">
+                <h3>💾 Gestion des Données</h3>
+                
+                <div class="warning">
+                    <h4>⚠️ Important</h4>
+                    <p>Les données sont stockées localement dans votre navigateur. Elles ne sont PAS partagées automatiquement entre différents appareils ou navigateurs.</p>
+                </div>
+
+                <div class="rules-section">
+                    <h4>📤 Exporter les données</h4>
+                    <p>Sauvegardez vos données du tournoi dans un fichier</p>
+                    <div class="export-import">
+                        <button onclick="exportData()">📥 Télécharger Sauvegarde</button>
+                        <button onclick="exportDataAsText()">📋 Copier comme Texte</button>
+                    </div>
+                </div>
+
+                <div class="rules-section">
+                    <h4>📥 Importer les données</h4>
+                    <p>Restaurer des données depuis un fichier de sauvegarde</p>
+                    <div class="export-import">
+                        <input type="file" id="importFile" accept=".json" onchange="importData(event)">
+                        <button onclick="document.getElementById('importFile').click()">📂 Charger Sauvegarde</button>
+                    </div>
+                </div>
+
+                <div class="rules-section">
+                    <h4>🔗 Partager les données</h4>
+                    <p>Pour partager avec d'autres personnes :</p>
+                    <ol>
+                        <li>Exportez vos données avec le bouton ci-dessus</li>
+                        <li>Envoyez le fichier .json aux autres participants</li>
+                        <li>Ils peuvent l'importer sur leur appareil</li>
+                    </ol>
+                </div>
+
+                <div class="rules-section">
+                    <h4>📊 Statistiques</h4>
+                    <div id="dataStats"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Podium -->
+    <div id="podiumModal" class="podium-modal">
+        <div class="podium-content">
+            <button class="podium-close" onclick="closePodium()">×</button>
+            <h2 style="text-align: center; color: #ffd700; margin-bottom: 10px;">🏆 PODIUM KING OF THE HILL 🏆</h2>
+            <p style="text-align: center; opacity: 0.8; margin-bottom: 30px;">Top 3 des joueurs par Points KotH</p>
+            
+            <div class="podium-display" id="podiumDisplay">
+                <!-- Le podium sera généré dynamiquement -->
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button onclick="closePodium()" style="background: #4CAF50; padding: 10px 20px;">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales - Format simplifié (plus de distinction expérimenté)
+        let players = {
+              "Kévin": {
+      "matches": 2,
+      "wins": 2,
+      "points": 1,
+      "consecutive": 0
+    },
+    "Daniel": {
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Mélia": {
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Floran": {
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Yann": {
+      "matches": 1,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Latifa": {
+      "matches": 2,
+      "wins": 2,
+      "points": 1,
+      "consecutive": 0
+    },
+    "Antoine": {
+      "matches": 1,
+      "wins": 1,
+      "points": 0,
+      "consecutive": 1
+    },
+    "Renaud": {
+      "matches": 3,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Bruno": {
+      "matches": 2,
+      "wins": 1,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Benoit": {
+      "matches": 2,
+      "wins": 2,
+      "points": 1,
+      "consecutive": 0
+    },
+    "Youssef": {
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Ruan": {
+      "matches": 2,
+      "wins": 2,
+      "points": 1,
+      "consecutive": 0
+    },
+    "Didrik": {
+      "matches": 3,
+      "wins": 1,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Philippe": {
+      "matches": 4,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    },
+    "Simon": {
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "consecutive": 0
+    }
+        };
+        
+        let currentKing = 'Benoit';
+        let matchHistory = [
+          {
+            "winner": "Bruno",
+            "loser": "Renaud",
+            "score": "5-2",
+            "pause": "1",
+            "duration": "N/A",
+            "timestamp": "14:05:03",
+            "forceRotation": false
+          },
+          {
+            "winner": "Didrik",
+            "loser": "Philippe",
+            "score": "5-2",
+            "pause": "1",
+            "duration": "N/A",
+            "timestamp": "14:05:14",
+            "forceRotation": false
+          },
+          {
+            "winner": "Kévin",
+            "loser": "Yann",
+            "score": "5-1",
+            "pause": "1",
+            "duration": "N/A",
+            "timestamp": "17:00:05",
+            "forceRotation": false
+          },
+          {
+            "winner": "Ruan",
+            "loser": "Bruno",
+            "score": "5-0",
+            "pause": "2",
+            "duration": "N/A",
+            "timestamp": "18:04:46",
+            "forceRotation": false
+          },
+          {
+            "winner": "Latifa",
+            "loser": "Didrik",
+            "score": "5-2",
+            "pause": "1",
+            "duration": "N/A",
+            "timestamp": "10:54:18",
+            "forceRotation": false
+          },
+          {
+            "winner": "Latifa",
+            "loser": "Philippe",
+            "score": "5-0",
+            "pause": "1",
+            "duration": "N/A",
+            "timestamp": "16:08:36",
+            "forceRotation": true
+          },
+          {
+            "winner": "Benoit",
+            "loser": "Philippe",
+            "score": "5-1",
+            "pause": "1",
+            "duration": "N/A",
+            "timestamp": "16:09:00",
+            "forceRotation": false
+          },
+          {
+            "winner": "Kévin",
+            "loser": "Renaud",
+            "score": "5-2",
+            "pause": "1",
+            "duration": "N/A",
+            "timestamp": "16:09:14",
+            "forceRotation": true
+          },
+          {
+            "winner": "Antoine",
+            "loser": "Philippe",
+            "score": "5-2",
+            "pause": "1",
+            "duration": "N/A",
+            "timestamp": "16:09:28",
+            "forceRotation": false
+          },
+          {
+            "winner": "Ruan",
+            "loser": "Renaud",
+            "score": "5-1",
+            "pause": "1",
+            "duration": "N/A",
+            "timestamp": "16:12:21",
+            "forceRotation": true
+          },
+          {
+            "winner": "Benoit",
+              "loser": "Didrik",
+              "score": "5-0",
+              "pause": "1",
+              "duration": "N/A",
+              "timestamp": "16:50:33",
+              "forceRotation": true
+          }
+        ];
+
+        // Chargement automatique des données sauvegardées
+        function loadSavedData() {
+            try {
+                const savedData = localStorage.getItem('tossitTournament');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    players = data.players || players;
+                    currentKing = data.currentKing || '';
+                    matchHistory = data.matchHistory || [];
+                }
+            } catch (e) {
+                console.error('Erreur lors du chargement des données:', e);
+            }
+        }
+
+        // Sauvegarde automatique des données
+        function saveData() {
+            try {
+                const data = {
+                    players: players,
+                    currentKing: currentKing,
+                    matchHistory: matchHistory,
+                    lastUpdate: new Date().toISOString()
+                };
+                localStorage.setItem('tossitTournament', JSON.stringify(data));
+                updateDataStats();
+            } catch (e) {
+                console.error('Erreur lors de la sauvegarde:', e);
+            }
+        }
+
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            
+            // CORRECTION CRITIQUE : Ajouter updateMatchHistory() ici
+            if (tabName === 'tracker') {
+                updateStandings();
+                updateMatchHistory(); // Cette ligne était manquante dans ton code
+                updateCurrentKingDisplay();
+            } else if (tabName === 'data') {
+                updateDataStats();
+            }
+        }
+
+        function addMatch() {
+            const player1 = document.getElementById('player1').value;
+            const score1 = parseInt(document.getElementById('score1').value) || 0;
+            const player2 = document.getElementById('player2').value;
+            const score2 = parseInt(document.getElementById('score2').value) || 0;
+            const pause = document.getElementById('pauseNumber').value;
+            const duration = document.getElementById('matchDuration').value;
+            
+            if (!player1 || !player2 || player1 === player2) {
+                alert('⚠️ Veuillez sélectionner deux joueurs différents');
+                return;
+            }
+            
+            if (score1 === score2) {
+                alert('⚠️ Il ne peut pas y avoir d\'égalité (point d\'or à 4-4)');
+                return;
+            }
+            
+            if (Math.max(score1, score2) > 5) {
+                alert('⚠️ Score maximum : 5 points');
+                return;
+            }
+            
+            if (matchHistory.length >= 12) {
+                alert('⚠️ Limite de 12 matches atteinte');
+                return;
+            }
+            
+            const winner = score1 > score2 ? player1 : player2;
+            const loser = score1 > score2 ? player2 : player1;
+            const winnerScore = Math.max(score1, score2);
+            const loserScore = Math.min(score1, score2);
+            
+            // Mettre à jour les stats
+            players[winner].matches++;
+            players[winner].wins++;
+            players[winner].consecutive++;
+            
+            players[loser].matches++;
+            players[loser].consecutive = 0;
+            
+            // Vérification rotation forcée
+            let forceRotation = false;
+            if (players[winner].consecutive >= 2) {
+                players[winner].points++;
+                forceRotation = true;
+                alert(`🏆 ${winner} marque 1 point et doit céder la place (rotation forcée) !`);
+                players[winner].consecutive = 0;
+            }
+            
+            // Mise à jour du roi
+            currentKing = forceRotation ? '' : winner;
+            
+            // Ajouter à l'historique
+            matchHistory.push({
+                winner: winner,
+                loser: loser,
+                score: `${winnerScore}-${loserScore}`,
+                pause: pause,
+                duration: duration || 'N/A',
+                timestamp: new Date().toLocaleTimeString(),
+                forceRotation: forceRotation
+            });
+            
+            // Sauvegarder
+            saveData();
+            
+            // Reset formulaire
+            document.getElementById('player1').value = '';
+            document.getElementById('score1').value = '';
+            document.getElementById('player2').value = '';
+            document.getElementById('score2').value = '';
+            document.getElementById('matchDuration').value = '';
+            
+            updateStandings();
+            updateMatchHistory();
+            updateCurrentKingDisplay();
+        }
+
+        function updateStandings() {
+            const tbody = document.getElementById('standingsBody');
+            tbody.innerHTML = '';
+            
+            const sortedPlayers = Object.entries(players).sort((a, b) => {
+                if (b[1].points !== a[1].points) return b[1].points - a[1].points;
+                return b[1].wins - a[1].wins;
+            });
+            
+            sortedPlayers.forEach((entry, index) => {
+                const [name, stats] = entry;
+                const row = document.createElement('tr');
+                if (name === currentKing) {
+                    row.classList.add('king');
+                }
+                
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${name}</td>
+                    <td>${stats.matches}</td>
+                    <td>${stats.wins}</td>
+                    <td>${stats.points}</td>
+                    <td>${name === currentKing ? '👑 ROI' : stats.consecutive > 0 ? `${stats.consecutive} victoires` : ''}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateMatchHistory() {
+            const historyDiv = document.getElementById('matchHistory');
+            if (!historyDiv) return; // Sécurité au cas où l'élément n'existe pas
+            
+            historyDiv.innerHTML = '';
+            
+            if (matchHistory.length === 0) {
+                historyDiv.innerHTML = '<p style="opacity: 0.7; text-align: center; padding: 20px;">Aucun match joué pour le moment</p>';
+                return;
+            }
+            
+            matchHistory.slice(-10).reverse().forEach((match, index) => {
+                const matchDiv = document.createElement('div');
+                matchDiv.style.cssText = `
+                    background: rgba(255,255,255,0.1); 
+                    padding: 12px; 
+                    margin: 8px 0; 
+                    border-radius: 8px;
+                    border-left: 4px solid ${match.forceRotation ? '#ffd700' : '#4CAF50'};
+                `;
+                matchDiv.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>🏆 ${match.winner}</strong> bat <strong>${match.loser}</strong> 
+                            (${match.score})
+                            ${match.forceRotation ? ' <span style="color: #ffd700;">👑 +1pt & Rotation forcée</span>' : ''}
+                        </div>
+                        <div style="font-size: 0.9em; opacity: 0.8;">
+                            Pause ${match.pause} | ${match.duration}min | ${match.timestamp}
+                        </div>
+                    </div>
+                `;
+                historyDiv.appendChild(matchDiv);
+            });
+        }
+
+        function updateCurrentKingDisplay() {
+            const kingDisplay = document.getElementById('currentKingDisplay');
+            const totalMatchesDisplay = document.getElementById('totalMatches');
+            
+            if (!kingDisplay || !totalMatchesDisplay) return;
+            
+            kingDisplay.textContent = currentKing || 'Aucun';
+            totalMatchesDisplay.textContent = matchHistory.length;
+            
+            if (matchHistory.length >= 12) {
+                kingDisplay.parentElement.style.background = 'rgba(255, 215, 0, 0.3)';
+                if (!kingDisplay.parentElement.innerHTML.includes('TERMINÉ')) {
+                    kingDisplay.parentElement.innerHTML += ' <strong style="color: #ffd700;">🏁 TOURNOI TERMINÉ</strong>';
+                }
+            }
+        }
+
+        function updateDataStats() {
+            const statsDiv = document.getElementById('dataStats');
+            if (!statsDiv) return;
+            
+            const totalMatches = matchHistory.length;
+            const totalPlayers = Object.keys(players).filter(p => players[p].matches > 0).length;
+            const savedData = localStorage.getItem('tossitTournament');
+            const dataSize = savedData ? (new Blob([savedData]).size / 1024).toFixed(2) : '0';
+            
+            statsDiv.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                        <div style="font-size: 2em; font-weight: bold; color: #ffd700;">${totalMatches}</div>
+                        <div>Matches joués</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                        <div style="font-size: 2em; font-weight: bold; color: #4ecdc4;">${totalPlayers}</div>
+                        <div>Joueurs actifs</div>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; opacity: 0.7;">Taille des données: ${dataSize} KB</p>
+                <p style="opacity: 0.7;">Dernière sauvegarde: ${savedData ? new Date(JSON.parse(savedData).lastUpdate).toLocaleString() : 'Jamais'}</p>
+            `;
+        }
+
+        function resetTournament() {
+            if (confirm('Êtes-vous sûr de vouloir réinitialiser le tournoi ?')) {
+                Object.keys(players).forEach(player => {
+                    players[player] = {
+                        matches: 0, 
+                        wins: 0, 
+                        points: 0, 
+                        consecutive: 0
+                    };
+                });
+                currentKing = '';
+                matchHistory = [];
+                saveData();
+                updateStandings();
+                updateMatchHistory();
+                updateCurrentKingDisplay();
+                updateDataStats();
+            }
+        }
+
+        // Fonctions de gestion des données
+        function exportData() {
+            const data = {
+                players: players,
+                currentKing: currentKing,
+                matchHistory: matchHistory,
+                exportDate: new Date().toISOString(),
+                version: "1.0"
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `tossit_tournoi_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function exportDataAsText() {
+            const data = {
+                players: players,
+                currentKing: currentKing,
+                matchHistory: matchHistory,
+                exportDate: new Date().toISOString()
+            };
+            
+            const textData = JSON.stringify(data, null, 2);
+            navigator.clipboard.writeText(textData).then(() => {
+                alert('📋 Données copiées dans le presse-papiers !');
+            }).catch(() => {
+                // Fallback si clipboard API ne fonctionne pas
+                const textArea = document.createElement('textarea');
+                textArea.value = textData;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('📋 Données copiées dans le presse-papiers !');
+            });
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    // Validation basique
+                    if (!data.players || !data.matchHistory) {
+                        throw new Error('Format de fichier invalide');
+                    }
+                    
+                    if (confirm('⚠️ Cela va remplacer toutes les données actuelles. Continuer ?')) {
+                        players = data.players;
+                        currentKing = data.currentKing || '';
+                        matchHistory = data.matchHistory;
+                        
+                        saveData();
+                        updateStandings();
+                        updateMatchHistory();
+                        updateCurrentKingDisplay();
+                        updateDataStats();
+                        
+                        alert('✅ Données importées avec succès !');
+                    }
+                } catch (error) {
+                    alert('❌ Erreur lors de l\'import: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset input
+            event.target.value = '';
+        }
+
+        // Fonction pour afficher le top 5
+        function showPodium() {
+            const modal = document.getElementById('podiumModal');
+            const podiumDisplay = document.getElementById('podiumDisplay');
+            
+            // Trier les joueurs par Points KotH, puis par victoires, puis par matches
+            const sortedPlayers = Object.entries(players)
+                .filter(([name, stats]) => stats.matches > 0) // Seulement les joueurs actifs
+                .sort((a, b) => {
+                    if (b[1].points !== a[1].points) return b[1].points - a[1].points;
+                    if (b[1].wins !== a[1].wins) return b[1].wins - a[1].wins;
+                    return b[1].matches - a[1].matches;
+                });
+            
+            podiumDisplay.innerHTML = '';
+            
+            if (sortedPlayers.length === 0) {
+                podiumDisplay.innerHTML = '<p style="text-align: center; opacity: 0.7;">Aucun joueur actif pour le moment</p>';
+            } else {
+                // Créer le top 5
+                const rankEmojis = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
+                const rankClasses = ['first', 'second', 'third', '', ''];
+                
+                const topPlayers = sortedPlayers.slice(0, 5);
+                
+                topPlayers.forEach((entry, index) => {
+                    const [name, stats] = entry;
+                    const rank = index + 1;
+                    
+                    const playerCard = document.createElement('div');
+                    playerCard.className = `podium-place ${rankClasses[index]}`;
+                    
+                    playerCard.innerHTML = `
+                        <div class="podium-rank">${rankEmojis[index]}</div>
+                        <div class="podium-info">
+                            <div class="podium-name">${name}</div>
+                            <div class="podium-points">${stats.points} Points KotH</div>
+                            <div class="podium-stats">
+                                ${stats.wins} victoires • ${stats.matches} matches joués
+                                ${stats.consecutive > 0 ? ` • ${stats.consecutive} victoires consécutives` : ''}
+                            </div>
+                        </div>
+                        ${name === currentKing ? '<div class="podium-crown">👑</div>' : ''}
+                    `;
+                    
+                    podiumDisplay.appendChild(playerCard);
+                });
+                
+                // Afficher un message si moins de 5 joueurs actifs
+                if (topPlayers.length < 5) {
+                    const infoDiv = document.createElement('div');
+                    infoDiv.style.cssText = 'text-align: center; opacity: 0.6; margin-top: 20px; font-size: 0.9em;';
+                    infoDiv.innerHTML = `
+                        <p>Top ${topPlayers.length} affiché - ${15 - sortedPlayers.length} joueurs n'ont pas encore joué</p>
+                    `;
+                    podiumDisplay.appendChild(infoDiv);
+                }
+            }
+            
+            modal.style.display = 'flex';
+        }
+
+        // Fonction pour fermer le podium
+        function closePodium() {
+            document.getElementById('podiumModal').style.display = 'none';
+        }
+
+        // Fermer le podium en cliquant à côté
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('podiumModal');
+            if (event.target === modal) {
+                closePodium();
+            }
+        });
+
+        // Fermer avec la touche Escape
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closePodium();
+            }
+        });
+
+        // CORRECTION CRITIQUE : Initialisation complète au chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initialisation du tournoi...');
+            loadSavedData();
+            updateStandings();
+            updateMatchHistory(); // Cette ligne était manquante dans ton code original
+            updateCurrentKingDisplay();
+            updateDataStats();
+            console.log('Matches chargés:', matchHistory.length);
+        });
+    </script>
+</body>
+</html>

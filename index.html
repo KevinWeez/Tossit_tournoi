@@ -192,6 +192,8 @@
             max-width: 600px;
             width: 90%;
             position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
         }
         .podium-close {
             position: absolute;
@@ -234,11 +236,15 @@
             background: linear-gradient(90deg, #CD7F32, #B8860B);
             color: #333;
         }
+        .podium-place.tied {
+            border: 3px solid #ff6b6b;
+            background: rgba(255, 107, 107, 0.2);
+        }
         .podium-rank {
             font-size: 2.5em;
             font-weight: bold;
             margin-right: 20px;
-            min-width: 60px;
+            min-width: 80px;
             text-align: center;
         }
         .podium-info {
@@ -262,6 +268,15 @@
             font-size: 1.5em;
             margin-left: 15px;
         }
+        .tie-indicator {
+            background: rgba(255, 107, 107, 0.3);
+            color: #ff6b6b;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -272,14 +287,117 @@
         </div>
 
         <div class="tab-buttons">
-            <button class="tab-btn active" onclick="showTab('rules')">📋 Règles</button>
+            <button class="tab-btn active" onclick="showTab('tracker')">📊 Suivi Matches</button>
+            <button class="tab-btn" onclick="showTab('rules')">📋 Règles</button>
             <button class="tab-btn" onclick="showTab('formatA')">⚡ King of the Hill</button>
-            <button class="tab-btn" onclick="showTab('tracker')">📊 Suivi Matches</button>
             <button class="tab-btn" onclick="showTab('data')">💾 Données</button>
         </div>
 
+        <!-- SUIVI MATCHES -->
+        <div id="tracker" class="tab-content active">
+            <div class="match-tracker">
+                <h3>📊 Saisie des Matches</h3>
+                <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <h4>🎯 Rappel des Règles :</h4>
+                    <ul style="margin: 10px 0;">
+                        <li><strong>Score libre</strong> (plus de limitation)</li>
+                        <li><strong>Rotation forcée :</strong> Après 2 victoires consécutives</li>
+                        <li><strong>Arbitres :</strong> Kévin / Ruan</li>
+                    </ul>
+                </div>
+                
+                <div class="match-input">
+                    <select id="player1">
+                        <option value="">👤 Joueur 1</option>            
+                        <option value="Kévin">Kévin</option>
+                        <option value="Daniel">Daniel</option>
+                        <option value="Mélia">Mélia</option>
+                        <option value="Floran">Floran</option>
+                        <option value="Yann">Yann</option>
+                        <option value="Latifa">Latifa</option>
+                        <option value="Antoine">Antoine</option>
+                        <option value="Renaud">Renaud</option>
+                        <option value="Bruno">Bruno</option>
+                        <option value="Benoit">Benoit</option>
+                        <option value="Youssef">Youssef</option>
+                        <option value="Ruan">Ruan</option>
+                        <option value="Didrik">Didrik</option>
+                        <option value="Philippe">Philippe</option>
+                        <option value="Simon">Simon</option>
+                    </select>
+                    
+                    <input type="number" id="score1" placeholder="Score" min="0" max="99">
+                    
+                    <select id="player2">
+                        <option value="">Joueur 2</option>
+                        <option value="Kévin">Kévin</option>
+                        <option value="Daniel">Daniel</option>
+                        <option value="Mélia">Mélia</option>
+                        <option value="Floran">Floran</option>
+                        <option value="Yann">Yann</option>
+                        <option value="Latifa">Latifa</option>
+                        <option value="Antoine">Antoine</option>
+                        <option value="Renaud">Renaud</option>
+                        <option value="Bruno">Bruno</option>
+                        <option value="Benoit">Benoit</option>
+                        <option value="Youssef">Youssef</option>
+                        <option value="Ruan">Ruan</option>
+                        <option value="Didrik">Didrik</option>
+                        <option value="Philippe">Philippe</option>
+                        <option value="Simon">Simon</option>
+                    </select>
+                    
+                    <input type="number" id="score2" placeholder="Score" min="0" max="99">
+                </div>
+                
+                <div style="display: flex; gap: 10px; align-items: center; margin: 15px 0; flex-wrap: wrap;">
+                    <button onclick="addMatch()">➕ Ajouter Match</button>
+                    <button onclick="resetTournament()" style="background: #f44336;">🔄 Reset Tournoi</button>
+                    <button onclick="showPodium()" style="background: #FF8C00;">🏆 Afficher Podium</button>
+                    <select id="pauseNumber" style="margin-left: 20px;">
+                        <option value="1">Pause 1</option>
+                        <option value="2">Pause 2</option>
+                        <option value="3">Pause 3</option>
+                        <option value="4">Pause 4</option>
+                        <option value="5">Pause 5</option>
+                        <option value="6">Pause 6</option>
+                    </select>
+                    <span>⏱️ Durée match : </span>
+                    <input type="number" id="matchDuration" placeholder="min" min="1" max="15" style="width: 60px;">
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px;">
+                    <strong>👑 Roi actuel :</strong> <span id="currentKingDisplay">Aucun</span> 
+                    <span style="margin-left: 20px;"><strong>🎯 Matches joués :</strong> <span id="totalMatches">0</span></span>
+                </div>
+            </div>
+
+            <div class="standings">
+                <h3>🏆 Classement King of the Hill</h3>
+                <table id="standingsTable">
+                    <thead>
+                        <tr>
+                            <th>Rang</th>
+                            <th>Joueur</th>
+                            <th>Matches</th>
+                            <th>Victoires</th>
+                            <th>Points KotH</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody id="standingsBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="standings">
+                <h3>📋 Historique des Matches</h3>
+                <div id="matchHistory"></div>
+            </div>
+        </div>
+
         <!-- RÈGLES -->
-        <div id="rules" class="tab-content active">
+        <div id="rules" class="tab-content">
             <div class="rules-section">
                 <h3>📜 Règles Générales du Tossit</h3>
                 <ul>
@@ -287,7 +405,7 @@
                     <li><strong>Terrain :</strong> Table de ping-pong</li>
                     <li><strong>Cochonnet :</strong> Doit être tiré derrière le filet</li>
                     <li><strong>JackOver :</strong> Autorisé</li>
-                    <li><strong>Score :</strong> Premier à 5 points (point d'or à 4-4)</li>
+                    <li><strong>Score :</strong> Libre (plus de limitation)</li>
                     <li><strong>Nettoyage :</strong> Jeu de tossit nettoyé au démarrage</li>
                     <li><strong>Participation :</strong> Tout le monde doit jouer au minimum 1 fois</li>
                 </ul>
@@ -320,10 +438,10 @@
             <div class="rules-section">
                 <h3>⚡ Format King of the Hill</h3>
                 <ul>
-                    <li><strong>Matches à 5 points</strong> (au lieu de 7) = 5-8min max</li>
+                    <li><strong>Score libre</strong> - plus de limitation de points</li>
                     <li><strong>Rotation obligatoire :</strong> Toutes les 2 victoires OU après 10min</li>
-                    <li><strong>Tous égaux :</strong> Pas de handicap - tous gagnent à 5 points</li>
-                    <li><strong>Objectif :</strong> 2 matches par pause = 12 matches totaux</li>
+                    <li><strong>Tous égaux :</strong> Pas de handicap</li>
+                    <li><strong>Matches illimités :</strong> Plus de limite</li>
                 </ul>
             </div>
 
@@ -331,32 +449,32 @@
                 <div class="pause-slot">
                     <h4>Pause 1</h4>
                     <p>15-30min</p>
-                    <p>2 matches prévus</p>
+                    <p>Matches libres</p>
                 </div>
                 <div class="pause-slot">
                     <h4>Pause 2</h4>
                     <p>15-30min</p>
-                    <p>2 matches prévus</p>
+                    <p>Matches libres</p>
                 </div>
                 <div class="pause-slot">
                     <h4>Pause 3</h4>
                     <p>15-30min</p>
-                    <p>2 matches prévus</p>
+                    <p>Matches libres</p>
                 </div>
                 <div class="pause-slot">
                     <h4>Pause 4</h4>
                     <p>15-30min</p>
-                    <p>2 matches prévus</p>
+                    <p>Matches libres</p>
                 </div>
                 <div class="pause-slot">
                     <h4>Pause 5</h4>
                     <p>15-30min</p>
-                    <p>2 matches prévus</p>
+                    <p>Matches libres</p>
                 </div>
                 <div class="pause-slot">
                     <h4>Pause 6</h4>
                     <p>15-30min</p>
-                    <p>2 matches prévus</p>
+                    <p>Matches libres</p>
                 </div>
             </div>
 
@@ -366,110 +484,8 @@
                     <li><strong>2 victoires consécutives = 1 point</strong></li>
                     <li><strong>Rotation forcée après 2 victoires</strong></li>
                     <li><strong>Le joueur avec le plus de points gagne</strong></li>
+                    <li><strong>Égalités possibles :</strong> Plusieurs joueurs peuvent partager la même place</li>
                 </ul>
-            </div>
-        </div>
-
-        <!-- SUIVI MATCHES -->
-        <div id="tracker" class="tab-content">
-            <div class="match-tracker">
-                <h3>📊 Saisie des Matches</h3>
-                <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                    <h4>🎯 Rappel des Règles :</h4>
-                    <ul style="margin: 10px 0;">
-                        <li><strong>Score à 5 points</strong> (Point d'or si 4-4)</li>
-                        <li><strong>Rotation forcée :</strong> Après 2 victoires consécutives</li>
-                        <li><strong>Arbitres :</strong> Kévin / Ruan</li>
-                    </ul>
-                </div>
-                
-                <div class="match-input">
-                    <select id="player1">
-                        <option value="">👤 Joueur 1</option>            
-                        <option value="Kévin">Kévin</option>
-                        <option value="Daniel">Daniel</option>
-                        <option value="Mélia">Mélia</option>
-                        <option value="Floran">Floran</option>
-                        <option value="Yann">Yann</option>
-                        <option value="Latifa">Latifa</option>
-                        <option value="Antoine">Antoine</option>
-                        <option value="Renaud">Renaud</option>
-                        <option value="Bruno">Bruno</option>
-                        <option value="Benoit">Benoit</option>
-                        <option value="Youssef">Youssef</option>
-                        <option value="Ruan">Ruan</option>
-                        <option value="Didrik">Didrik</option>
-                        <option value="Philippe">Philippe</option>
-                        <option value="Simon">Simon</option>
-                    </select>
-                    
-                    <input type="number" id="score1" placeholder="Score" min="0" max="5">
-                    
-                    <select id="player2">
-                        <option value="">Joueur 2</option>
-                        <option value="Kévin">Kévin</option>
-                        <option value="Daniel">Daniel</option>
-                        <option value="Mélia">Mélia</option>
-                        <option value="Floran">Floran</option>
-                        <option value="Yann">Yann</option>
-                        <option value="Latifa">Latifa</option>
-                        <option value="Antoine">Antoine</option>
-                        <option value="Renaud">Renaud</option>
-                        <option value="Bruno">Bruno</option>
-                        <option value="Benoit">Benoit</option>
-                        <option value="Youssef">Youssef</option>
-                        <option value="Ruan">Ruan</option>
-                        <option value="Didrik">Didrik</option>
-                        <option value="Philippe">Philippe</option>
-                        <option value="Simon">Simon</option>
-                    </select>
-                    
-                    <input type="number" id="score2" placeholder="Score" min="0" max="5">
-                </div>
-                
-                <div style="display: flex; gap: 10px; align-items: center; margin: 15px 0;">
-                    <button onclick="addMatch()">➕ Ajouter Match</button>
-                    <button onclick="resetTournament()" style="background: #f44336;">🔄 Reset Tournoi</button>
-                    <button onclick="showPodium()" style="background: #FF8C00;">🏆 Afficher Top 5</button>
-                    <select id="pauseNumber" style="margin-left: 20px;">
-                        <option value="1">Pause 1</option>
-                        <option value="2">Pause 2</option>
-                        <option value="3">Pause 3</option>
-                        <option value="4">Pause 4</option>
-                        <option value="5">Pause 5</option>
-                        <option value="6">Pause 6</option>
-                    </select>
-                    <span>⏱️ Durée match : </span>
-                    <input type="number" id="matchDuration" placeholder="min" min="1" max="15" style="width: 60px;">
-                </div>
-                
-                <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px;">
-                    <strong>👑 Roi actuel :</strong> <span id="currentKingDisplay">Aucun</span> 
-                    <span style="margin-left: 20px;"><strong>🎯 Matches joués :</strong> <span id="totalMatches">0</span>/99</span>
-                </div>
-            </div>
-
-            <div class="standings">
-                <h3>🏆 Classement King of the Hill</h3>
-                <table id="standingsTable">
-                    <thead>
-                        <tr>
-                            <th>Rang</th>
-                            <th>Joueur</th>
-                            <th>Matches</th>
-                            <th>Victoires</th>
-                            <th>Points KotH</th>
-                            <th>Statut</th>
-                        </tr>
-                    </thead>
-                    <tbody id="standingsBody">
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="standings">
-                <h3>📋 Historique des Matches</h3>
-                <div id="matchHistory"></div>
             </div>
         </div>
 
@@ -502,16 +518,6 @@
                 </div>
 
                 <div class="rules-section">
-                    <h4>🔗 Partager les données</h4>
-                    <p>Pour partager avec d'autres personnes :</p>
-                    <ol>
-                        <li>Exportez vos données avec le bouton ci-dessus</li>
-                        <li>Envoyez le fichier .json aux autres participants</li>
-                        <li>Ils peuvent l'importer sur leur appareil</li>
-                    </ol>
-                </div>
-
-                <div class="rules-section">
                     <h4>📊 Statistiques</h4>
                     <div id="dataStats"></div>
                 </div>
@@ -519,12 +525,12 @@
         </div>
     </div>
 
-    <!-- Modal Podium -->
+    <!-- Modal Podium avec gestion des égalités -->
     <div id="podiumModal" class="podium-modal">
         <div class="podium-content">
             <button class="podium-close" onclick="closePodium()">×</button>
             <h2 style="text-align: center; color: #ffd700; margin-bottom: 10px;">🏆 PODIUM KING OF THE HILL 🏆</h2>
-            <p style="text-align: center; opacity: 0.8; margin-bottom: 30px;">Top 3 des joueurs par Points KotH</p>
+            <p style="text-align: center; opacity: 0.8; margin-bottom: 30px;" id="podiumSubtitle">Classement par Points KotH avec gestion des égalités</p>
             
             <div class="podium-display" id="podiumDisplay">
                 <!-- Le podium sera généré dynamiquement -->
@@ -537,219 +543,225 @@
     </div>
 
     <script>
-        // Variables globales - Format simplifié (plus de distinction expérimenté)
+        // Variables globales avec données par défaut
         let players = {
-              "Kévin": {
-      "matches": 2,
-      "wins": 2,
-      "points": 1,
-      "consecutive": 0
-    },
-    "Daniel": {
-      "matches": 0,
-      "wins": 0,
-      "points": 0,
-      "consecutive": 0
-    },
-    "Mélia": {
-      "matches": 0,
-      "wins": 0,
-      "points": 0,
-      "consecutive": 0
-    },
-    "Floran": {
-      "matches": 0,
-      "wins": 0,
-      "points": 0,
-      "consecutive": 0
-    },
-    "Yann": {
-      "matches": 1,
-      "wins": 0,
-      "points": 0,
-      "consecutive": 0
-    },
-    "Latifa": {
-      "matches": 2,
-      "wins": 2,
-      "points": 1,
-      "consecutive": 0
-    },
-    "Antoine": {
-      "matches": 1,
-      "wins": 1,
-      "points": 0,
-      "consecutive": 1
-    },
-    "Renaud": {
-      "matches": 3,
-      "wins": 0,
-      "points": 0,
-      "consecutive": 0
-    },
-    "Bruno": {
-      "matches": 2,
-      "wins": 1,
-      "points": 0,
-      "consecutive": 0
-    },
-    "Benoit": {
-      "matches": 2,
-      "wins": 2,
-      "points": 1,
-      "consecutive": 0
-    },
-    "Youssef": {
-      "matches": 0,
-      "wins": 0,
-      "points": 0,
-      "consecutive": 0
-    },
-    "Ruan": {
-      "matches": 2,
-      "wins": 2,
-      "points": 1,
-      "consecutive": 0
-    },
-    "Didrik": {
-      "matches": 3,
-      "wins": 1,
-      "points": 0,
-      "consecutive": 0
-    },
-    "Philippe": {
-      "matches": 4,
-      "wins": 0,
-      "points": 0,
-      "consecutive": 0
-    },
-    "Simon": {
-      "matches": 0,
-      "wins": 0,
-      "points": 0,
-      "consecutive": 0
-    }
+          "Kévin": {
+            "matches": 2,
+            "wins": 2,
+            "points": 1,
+            "consecutive": 0
+          },
+          "Daniel": {
+            "matches": 0,
+            "wins": 0,
+            "points": 0,
+            "consecutive": 0
+          },
+          "Mélia": {
+            "matches": 0,
+            "wins": 0,
+            "points": 0,
+            "consecutive": 0
+          },
+          "Floran": {
+            "matches": 0,
+            "wins": 0,
+            "points": 0,
+            "consecutive": 0
+          },
+          "Yann": {
+            "matches": 1,
+            "wins": 0,
+            "points": 0,
+            "consecutive": 0
+          },
+          "Latifa": {
+            "matches": 2,
+            "wins": 2,
+            "points": 1,
+            "consecutive": 0
+          },
+          "Antoine": {
+            "matches": 1,
+            "wins": 1,
+            "points": 0,
+            "consecutive": 1
+          },
+          "Renaud": {
+            "matches": 3,
+            "wins": 0,
+            "points": 0,
+            "consecutive": 0
+          },
+          "Bruno": {
+            "matches": 2,
+            "wins": 1,
+            "points": 0,
+            "consecutive": 0
+          },
+          "Benoit": {
+            "matches": 1,
+            "wins": 1,
+            "points": 0,
+            "consecutive": 1
+          },
+          "Youssef": {
+            "matches": 0,
+            "wins": 0,
+            "points": 0,
+            "consecutive": 0
+          },
+          "Ruan": {
+            "matches": 2,
+            "wins": 2,
+            "points": 1,
+            "consecutive": 0
+          },
+          "Didrik": {
+            "matches": 2,
+            "wins": 1,
+            "points": 0,
+            "consecutive": 0
+          },
+          "Philippe": {
+            "matches": 4,
+            "wins": 0,
+            "points": 0,
+            "consecutive": 0
+          },
+          "Simon": {
+            "matches": 0,
+            "wins": 0,
+            "points": 0,
+            "consecutive": 0
+          }
         };
         
-        let currentKing = 'Benoit';
+        let currentKing = 'Antoine';
         let matchHistory = [
-          {
-            "winner": "Bruno",
-            "loser": "Renaud",
-            "score": "5-2",
-            "pause": "1",
-            "duration": "N/A",
-            "timestamp": "14:05:03",
-            "forceRotation": false
-          },
-          {
-            "winner": "Didrik",
-            "loser": "Philippe",
-            "score": "5-2",
-            "pause": "1",
-            "duration": "N/A",
-            "timestamp": "14:05:14",
-            "forceRotation": false
-          },
-          {
-            "winner": "Kévin",
-            "loser": "Yann",
-            "score": "5-1",
-            "pause": "1",
-            "duration": "N/A",
-            "timestamp": "17:00:05",
-            "forceRotation": false
-          },
-          {
-            "winner": "Ruan",
-            "loser": "Bruno",
-            "score": "5-0",
-            "pause": "2",
-            "duration": "N/A",
-            "timestamp": "18:04:46",
-            "forceRotation": false
-          },
-          {
-            "winner": "Latifa",
-            "loser": "Didrik",
-            "score": "5-2",
-            "pause": "1",
-            "duration": "N/A",
-            "timestamp": "10:54:18",
-            "forceRotation": false
-          },
-          {
-            "winner": "Latifa",
-            "loser": "Philippe",
-            "score": "5-0",
-            "pause": "1",
-            "duration": "N/A",
-            "timestamp": "16:08:36",
-            "forceRotation": true
-          },
-          {
-            "winner": "Benoit",
-            "loser": "Philippe",
-            "score": "5-1",
-            "pause": "1",
-            "duration": "N/A",
-            "timestamp": "16:09:00",
-            "forceRotation": false
-          },
-          {
-            "winner": "Kévin",
-            "loser": "Renaud",
-            "score": "5-2",
-            "pause": "1",
-            "duration": "N/A",
-            "timestamp": "16:09:14",
-            "forceRotation": true
-          },
-          {
-            "winner": "Antoine",
-            "loser": "Philippe",
-            "score": "5-2",
-            "pause": "1",
-            "duration": "N/A",
-            "timestamp": "16:09:28",
-            "forceRotation": false
-          },
-          {
-            "winner": "Ruan",
-            "loser": "Renaud",
-            "score": "5-1",
-            "pause": "1",
-            "duration": "N/A",
-            "timestamp": "16:12:21",
-            "forceRotation": true
-          },
-          {
-            "winner": "Benoit",
-              "loser": "Didrik",
-              "score": "5-0",
-              "pause": "1",
-              "duration": "N/A",
-              "timestamp": "16:50:33",
-              "forceRotation": true
-          }
-        ];
+             {
+               "winner": "Bruno",
+               "loser": "Renaud",
+               "score": "5-2",
+               "pause": "1",
+               "duration": "N/A",
+               "timestamp": "14:05:03",
+               "forceRotation": false
+             },
+             {
+               "winner": "Didrik",
+               "loser": "Philippe",
+               "score": "5-2",
+               "pause": "1",
+               "duration": "N/A",
+               "timestamp": "14:05:14",
+               "forceRotation": false
+             },
+             {
+               "winner": "Kévin",
+               "loser": "Yann",
+               "score": "5-1",
+               "pause": "1",
+               "duration": "N/A",
+               "timestamp": "17:00:05",
+               "forceRotation": false
+             },
+             {
+               "winner": "Ruan",
+               "loser": "Bruno",
+               "score": "5-0",
+               "pause": "2",
+               "duration": "N/A",
+               "timestamp": "18:04:46",
+               "forceRotation": false
+             },
+             {
+               "winner": "Latifa",
+               "loser": "Didrik",
+               "score": "5-2",
+               "pause": "1",
+               "duration": "N/A",
+               "timestamp": "10:54:18",
+               "forceRotation": false
+             },
+             {
+               "winner": "Latifa",
+               "loser": "Philippe",
+               "score": "5-0",
+               "pause": "1",
+               "duration": "N/A",
+               "timestamp": "16:08:36",
+               "forceRotation": true
+             },
+             {
+               "winner": "Benoit",
+               "loser": "Philippe",
+               "score": "5-1",
+               "pause": "1",
+               "duration": "N/A",
+               "timestamp": "16:09:00",
+               "forceRotation": false
+             },
+             {
+               "winner": "Kévin",
+               "loser": "Renaud",
+               "score": "5-2",
+               "pause": "1",
+               "duration": "N/A",
+               "timestamp": "16:09:14",
+               "forceRotation": true
+             },
+             {
+               "winner": "Antoine",
+               "loser": "Philippe",
+               "score": "5-2",
+               "pause": "1",
+               "duration": "N/A",
+               "timestamp": "16:09:28",
+               "forceRotation": false
+             },
+             {
+               "winner": "Ruan",
+               "loser": "Renaud",
+               "score": "5-1",
+               "pause": "1",
+               "duration": "N/A",
+               "timestamp": "16:12:21",
+               "forceRotation": true
+             },
+             {
+               "winner": "Benoit",
+               "loser": "Didrik",
+               "score": "5-0",
+               "pause": "1",
+               "duration": "N/A",
+               "timestamp": "16:50:33",
+               "forceRotation": true
+             }
+            ];
 
-        // Chargement automatique des données sauvegardées
         function loadSavedData() {
             try {
                 const savedData = localStorage.getItem('tossitTournament');
                 if (savedData) {
                     const data = JSON.parse(savedData);
                     players = data.players || players;
-                    currentKing = data.currentKing || '';
-                    matchHistory = data.matchHistory || [];
+                    currentKing = data.currentKing || currentKing;
+                    matchHistory = data.matchHistory || matchHistory;
+                } else {
+                    saveData();
                 }
             } catch (e) {
                 console.error('Erreur lors du chargement des données:', e);
+                saveData();
             }
+            
+            updateStandings();
+            updateMatchHistory();
+            updateCurrentKingDisplay();
+            updateDataStats();
         }
 
-        // Sauvegarde automatique des données
         function saveData() {
             try {
                 const data = {
@@ -777,10 +789,9 @@
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
             
-            // CORRECTION CRITIQUE : Ajouter updateMatchHistory() ici
             if (tabName === 'tracker') {
                 updateStandings();
-                updateMatchHistory(); // Cette ligne était manquante dans ton code
+                updateMatchHistory();
                 updateCurrentKingDisplay();
             } else if (tabName === 'data') {
                 updateDataStats();
@@ -801,17 +812,12 @@
             }
             
             if (score1 === score2) {
-                alert('⚠️ Il ne peut pas y avoir d\'égalité (point d\'or à 4-4)');
+                alert('⚠️ Il ne peut pas y avoir d\'égalité');
                 return;
             }
             
-            if (Math.max(score1, score2) > 5) {
-                alert('⚠️ Score maximum : 5 points');
-                return;
-            }
-            
-            if (matchHistory.length >= 12) {
-                alert('⚠️ Limite de 12 matches atteinte');
+            if (Math.max(score1, score2) > 99) {
+                alert('⚠️ Score maximum : 99 points');
                 return;
             }
             
@@ -820,7 +826,6 @@
             const winnerScore = Math.max(score1, score2);
             const loserScore = Math.min(score1, score2);
             
-            // Mettre à jour les stats
             players[winner].matches++;
             players[winner].wins++;
             players[winner].consecutive++;
@@ -828,7 +833,6 @@
             players[loser].matches++;
             players[loser].consecutive = 0;
             
-            // Vérification rotation forcée
             let forceRotation = false;
             if (players[winner].consecutive >= 2) {
                 players[winner].points++;
@@ -837,10 +841,8 @@
                 players[winner].consecutive = 0;
             }
             
-            // Mise à jour du roi
             currentKing = forceRotation ? '' : winner;
             
-            // Ajouter à l'historique
             matchHistory.push({
                 winner: winner,
                 loser: loser,
@@ -851,10 +853,8 @@
                 forceRotation: forceRotation
             });
             
-            // Sauvegarder
             saveData();
             
-            // Reset formulaire
             document.getElementById('player1').value = '';
             document.getElementById('score1').value = '';
             document.getElementById('player2').value = '';
@@ -866,6 +866,7 @@
             updateCurrentKingDisplay();
         }
 
+        // FONCTION CORRIGÉE : Gestion des égalités dans le classement
         function updateStandings() {
             const tbody = document.getElementById('standingsBody');
             tbody.innerHTML = '';
@@ -875,28 +876,48 @@
                 return b[1].wins - a[1].wins;
             });
             
+            let currentRank = 1;
+            let previousStats = null;
+            
             sortedPlayers.forEach((entry, index) => {
                 const [name, stats] = entry;
                 const row = document.createElement('tr');
+                
+                // Détection des égalités
+                const isNewTier = !previousStats || 
+                    previousStats.points !== stats.points || 
+                    previousStats.wins !== stats.wins;
+                
+                if (isNewTier && index > 0) {
+                    currentRank = index + 1;
+                }
+                
+                const isTied = !isNewTier || 
+                    (index < sortedPlayers.length - 1 && 
+                     sortedPlayers[index + 1][1].points === stats.points && 
+                     sortedPlayers[index + 1][1].wins === stats.wins);
+                
                 if (name === currentKing) {
                     row.classList.add('king');
                 }
                 
                 row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${name}</td>
+                    <td>${currentRank}${isTied}</td>
+                    <td>${name}${isTied}</td>
                     <td>${stats.matches}</td>
                     <td>${stats.wins}</td>
                     <td>${stats.points}</td>
                     <td>${name === currentKing ? '👑 ROI' : stats.consecutive > 0 ? `${stats.consecutive} victoires` : ''}</td>
                 `;
                 tbody.appendChild(row);
+                
+                previousStats = stats;
             });
         }
 
         function updateMatchHistory() {
             const historyDiv = document.getElementById('matchHistory');
-            if (!historyDiv) return; // Sécurité au cas où l'élément n'existe pas
+            if (!historyDiv) return;
             
             historyDiv.innerHTML = '';
             
@@ -905,7 +926,12 @@
                 return;
             }
             
-            matchHistory.slice(-10).reverse().forEach((match, index) => {
+            const counterDiv = document.createElement('div');
+            counterDiv.style.cssText = 'background: rgba(255,215,0,0.2); padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-weight: bold;';
+            counterDiv.innerHTML = `📊 ${matchHistory.length} matches joués au total`;
+            historyDiv.appendChild(counterDiv);
+            
+            matchHistory.slice().reverse().forEach((match, index) => {
                 const matchDiv = document.createElement('div');
                 matchDiv.style.cssText = `
                     background: rgba(255,255,255,0.1); 
@@ -917,6 +943,7 @@
                 matchDiv.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
+                            <span style="font-size: 0.9em; opacity: 0.7;">#${matchHistory.length - index}</span>
                             <strong>🏆 ${match.winner}</strong> bat <strong>${match.loser}</strong> 
                             (${match.score})
                             ${match.forceRotation ? ' <span style="color: #ffd700;">👑 +1pt & Rotation forcée</span>' : ''}
@@ -938,13 +965,6 @@
             
             kingDisplay.textContent = currentKing || 'Aucun';
             totalMatchesDisplay.textContent = matchHistory.length;
-            
-            if (matchHistory.length >= 12) {
-                kingDisplay.parentElement.style.background = 'rgba(255, 215, 0, 0.3)';
-                if (!kingDisplay.parentElement.innerHTML.includes('TERMINÉ')) {
-                    kingDisplay.parentElement.innerHTML += ' <strong style="color: #ffd700;">🏁 TOURNOI TERMINÉ</strong>';
-                }
-            }
         }
 
         function updateDataStats() {
@@ -992,7 +1012,6 @@
             }
         }
 
-        // Fonctions de gestion des données
         function exportData() {
             const data = {
                 players: players,
@@ -1025,7 +1044,6 @@
             navigator.clipboard.writeText(textData).then(() => {
                 alert('📋 Données copiées dans le presse-papiers !');
             }).catch(() => {
-                // Fallback si clipboard API ne fonctionne pas
                 const textArea = document.createElement('textarea');
                 textArea.value = textData;
                 document.body.appendChild(textArea);
@@ -1045,7 +1063,6 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     
-                    // Validation basique
                     if (!data.players || !data.matchHistory) {
                         throw new Error('Format de fichier invalide');
                     }
@@ -1069,18 +1086,17 @@
             };
             reader.readAsText(file);
             
-            // Reset input
             event.target.value = '';
         }
 
-        // Fonction pour afficher le top 5
+        // FONCTION AMÉLIORÉE : Podium avec gestion intelligente des égalités
         function showPodium() {
             const modal = document.getElementById('podiumModal');
             const podiumDisplay = document.getElementById('podiumDisplay');
+            const subtitle = document.getElementById('podiumSubtitle');
             
-            // Trier les joueurs par Points KotH, puis par victoires, puis par matches
-            const sortedPlayers = Object.entries(players)
-                .filter(([name, stats]) => stats.matches > 0) // Seulement les joueurs actifs
+            const activePlayers = Object.entries(players)
+                .filter(([name, stats]) => stats.matches > 0)
                 .sort((a, b) => {
                     if (b[1].points !== a[1].points) return b[1].points - a[1].points;
                     if (b[1].wins !== a[1].wins) return b[1].wins - a[1].wins;
@@ -1089,24 +1105,76 @@
             
             podiumDisplay.innerHTML = '';
             
-            if (sortedPlayers.length === 0) {
+            if (activePlayers.length === 0) {
                 podiumDisplay.innerHTML = '<p style="text-align: center; opacity: 0.7;">Aucun joueur actif pour le moment</p>';
-            } else {
-                // Créer le top 5
-                const rankEmojis = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
-                const rankClasses = ['first', 'second', 'third', '', ''];
-                
-                const topPlayers = sortedPlayers.slice(0, 5);
-                
-                topPlayers.forEach((entry, index) => {
-                    const [name, stats] = entry;
-                    const rank = index + 1;
+                modal.style.display = 'flex';
+                return;
+            }
+            
+            // Détection intelligente des égalités
+            const tiedGroups = [];
+            let currentGroup = [];
+            let currentStats = null;
+            
+            activePlayers.forEach(([name, stats]) => {
+                if (!currentStats || 
+                    currentStats.points !== stats.points || 
+                    currentStats.wins !== stats.wins) {
                     
+                    if (currentGroup.length > 0) {
+                        tiedGroups.push([...currentGroup]);
+                    }
+                    currentGroup = [];
+                    currentStats = stats;
+                }
+                currentGroup.push([name, stats]);
+            });
+            
+            if (currentGroup.length > 0) {
+                tiedGroups.push(currentGroup);
+            }
+            
+            // Émojis et styles pour le podium
+            const rankDisplays = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
+            const rankClasses = ['first', 'second', 'third', '', '', '', '', '', '', ''];
+            
+            let currentRank = 1;
+            let hasFirstPlace = false;
+            let hasSecondPlace = false;
+            let hasThirdPlace = false;
+            
+            tiedGroups.forEach((group, groupIndex) => {
+                const isTied = group.length > 1;
+                
+                group.forEach(([name, stats], playerIndex) => {
                     const playerCard = document.createElement('div');
-                    playerCard.className = `podium-place ${rankClasses[index]}`;
+                    let cardClass = 'podium-place';
+                    
+                    // Attribution des couleurs selon le rang réel
+                    if (currentRank === 1 && !hasFirstPlace) {
+                        cardClass += ' first';
+                        if (isTied) hasFirstPlace = false; // Plusieurs premiers
+                        else hasFirstPlace = true;
+                    } else if (currentRank <= 2 && hasFirstPlace && !hasSecondPlace) {
+                        cardClass += ' second';
+                        if (!isTied) hasSecondPlace = true;
+                    } else if (currentRank <= 3 && hasFirstPlace && hasSecondPlace && !hasThirdPlace) {
+                        cardClass += ' third';
+                        if (!isTied) hasThirdPlace = true;
+                    }
+                    
+                    if (isTied) {
+                        cardClass += ' tied';
+                    }
+                    
+                    playerCard.className = cardClass;
+                    
+                    const rankDisplay = isTied ? 
+                        `${rankDisplays[Math.min(currentRank - 1, 9)]} Ex-æquo` : 
+                        rankDisplays[Math.min(currentRank - 1, 9)];
                     
                     playerCard.innerHTML = `
-                        <div class="podium-rank">${rankEmojis[index]}</div>
+                        <div class="podium-rank">${rankDisplay}</div>
                         <div class="podium-info">
                             <div class="podium-name">${name}</div>
                             <div class="podium-points">${stats.points} Points KotH</div>
@@ -1121,26 +1189,36 @@
                     podiumDisplay.appendChild(playerCard);
                 });
                 
-                // Afficher un message si moins de 5 joueurs actifs
-                if (topPlayers.length < 5) {
-                    const infoDiv = document.createElement('div');
-                    infoDiv.style.cssText = 'text-align: center; opacity: 0.6; margin-top: 20px; font-size: 0.9em;';
-                    infoDiv.innerHTML = `
-                        <p>Top ${topPlayers.length} affiché - ${15 - sortedPlayers.length} joueurs n'ont pas encore joué</p>
-                    `;
-                    podiumDisplay.appendChild(infoDiv);
-                }
+                currentRank += group.length;
+            });
+            
+            // Mise à jour du sous-titre avec info sur les égalités
+            const tiedCount = tiedGroups.filter(group => group.length > 1).length;
+            if (tiedCount > 0) {
+                subtitle.textContent = `Classement avec ${tiedCount} groupe(s) d'égalité détecté(s)`;
+            } else {
+                subtitle.textContent = 'Classement par Points KotH - Aucune égalité';
+            }
+            
+            // Afficher un message informatif si beaucoup de joueurs inactifs
+            if (activePlayers.length < 10) {
+                const infoDiv = document.createElement('div');
+                infoDiv.style.cssText = 'text-align: center; opacity: 0.6; margin-top: 20px; font-size: 0.9em; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;';
+                infoDiv.innerHTML = `
+                    <p>📊 ${activePlayers.length} joueurs actifs sur 15</p>
+                    <p>${15 - activePlayers.length} joueurs n'ont pas encore joué</p>
+                `;
+                podiumDisplay.appendChild(infoDiv);
             }
             
             modal.style.display = 'flex';
         }
 
-        // Fonction pour fermer le podium
         function closePodium() {
             document.getElementById('podiumModal').style.display = 'none';
         }
 
-        // Fermer le podium en cliquant à côté
+        // Gestion des événements pour fermer le podium
         document.addEventListener('click', function(event) {
             const modal = document.getElementById('podiumModal');
             if (event.target === modal) {
@@ -1148,21 +1226,17 @@
             }
         });
 
-        // Fermer avec la touche Escape
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 closePodium();
             }
         });
 
-        // CORRECTION CRITIQUE : Initialisation complète au chargement de la page
+        // Initialisation au chargement
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Initialisation du tournoi...');
+            console.log('Initialisation du tournoi avec gestion des égalités...');
             loadSavedData();
-            updateStandings();
-            updateMatchHistory(); // Cette ligne était manquante dans ton code original
-            updateCurrentKingDisplay();
-            updateDataStats();
+            showTab('tracker');
             console.log('Matches chargés:', matchHistory.length);
         });
     </script>
