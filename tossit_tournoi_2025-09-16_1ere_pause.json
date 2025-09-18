@@ -1,10 +1,10 @@
 {
   "players": {
     "Kévin": {
-      "matches": 3,
-      "wins": 3,
-      "points": 1,
-      "consecutive": 1
+      "matches": 4,
+      "wins": 4,
+      "points": 2,
+      "consecutive": 0
     },
     "Daniel": {
       "matches": 1,
@@ -37,19 +37,19 @@
       "consecutive": 0
     },
     "Antoine": {
-      "matches": 4,
+      "matches": 5,
       "wins": 4,
       "points": 2,
       "consecutive": 0
     },
     "Renaud": {
-      "matches": 4,
+      "matches": 5,
       "wins": 1,
       "points": 0,
-      "consecutive": 1
+      "consecutive": 0
     },
     "Bruno": {
-      "matches": 3,
+      "matches": 4,
       "wins": 1,
       "points": 0,
       "consecutive": 0
@@ -73,10 +73,10 @@
       "consecutive": 0
     },
     "Didrik": {
-      "matches": 6,
-      "wins": 2,
+      "matches": 8,
+      "wins": 3,
       "points": 0,
-      "consecutive": 0
+      "consecutive": 1
     },
     "Philippe": {
       "matches": 7,
@@ -85,9 +85,9 @@
       "consecutive": 0
     },
     "Simon": {
-      "matches": 3,
-      "wins": 2,
-      "points": 1,
+      "matches": 7,
+      "wins": 5,
+      "points": 2,
       "consecutive": 0
     }
   },
@@ -290,7 +290,52 @@
       "duration": "N/A",
       "timestamp": "11:26:17",
       "forceRotation": true
+    },
+    {
+      "winner": "Simon",
+      "loser": "Renaud",
+      "score": "7-0",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "11:29:51",
+      "forceRotation": false
+    },
+    {
+      "winner": "Simon",
+      "loser": "Didrik",
+      "score": "5-0",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "11:30:33",
+      "forceRotation": true
+    },
+    {
+      "winner": "Didrik",
+      "loser": "Bruno",
+      "score": "5-2",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "11:42:43",
+      "forceRotation": false
+    },
+    {
+      "winner": "Simon",
+      "loser": "Antoine",
+      "score": "5-1",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "11:43:08",
+      "forceRotation": false
+    },
+    {
+      "winner": "Kévin",
+      "loser": "Simon",
+      "score": "5-2",
+      "pause": "1",
+      "duration": "N/A",
+      "timestamp": "11:43:24",
+      "forceRotation": true
     }
   ],
-  "exportDate": "2025-09-18T09:26:27.360Z"
+  "exportDate": "2025-09-18T09:43:40.047Z"
 }
